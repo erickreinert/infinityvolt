@@ -1,0 +1,142 @@
+swagger: "2.0"
+info:
+  description: Swagger file
+  version: "1.0.0"
+  title: Swagger Rest Clientes Infinity Volts
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /
+
+paths:
+  /clientes:
+    get:
+      operationId: api.clientes.read_all
+      tags:
+        - Clientes Infinity Volts
+      summary: Lista de Clientes
+      description: Lista de Clientes
+      responses:
+        200:
+          description: Sucesso na leitura de Clientes
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                Nome:
+                  type: string
+                Sobrenome:
+                  type: string
+                Data_Nasc:
+                  type: string
+                Telefone:
+                  type: string
+                Email:
+                  type: string
+                timestamp:
+                  type: string
+
+    post:
+      operationId: api.clientes.create
+      tags:
+        - Adiciona Clientes Infinity Volts
+      summary: Cria uma pessoa e adiciona na lista de Clientes
+      description: Adiciona na lista de Clientes
+      parameters:
+        - name: person
+          in: body
+          description: Pessoa a ser criada
+          required: True
+          schema:
+            type: object
+            properties:
+              Nome:
+                type: string
+                description: Primeiro nome
+              Sobrenome:
+                type: string
+                description: Ultimo nome
+              Data_Nasc:
+                type: string
+                description: Data Nascimento
+              Telefone:
+                 type: string
+                 description: Telefone
+              Email:
+                type: string
+                description: E-Mail
+      responses:
+        201:
+          description: Sucesso ao criar
+
+  /clientes/{id}:
+    get:
+      operationId: api.clientes.read_one
+      tags:
+        - Leitura de Clientes Infinity Volts
+      summary: Leitura de uma pessoa da lista de Clientes
+      description: Leitura de uma pessoa
+      parameters:
+        - name: id
+          in: path
+          description: Id do cliente
+          type: string
+          required: True
+      responses:
+        200:
+          description: Sucesso na leitura de uma pessoa
+          schema:
+            properties:
+              id:
+                type: string
+          
+    put:
+      operationId: api.clientes.update
+      tags:
+        - Alteração de Clientes Infinity Volts
+      summary: Update na lista de Clientes
+      description: Update na lista
+      parameters:
+        - name: id
+          in: path
+          description: Id do Cliente
+          type: string
+          required: True
+        - name: person
+          in: body
+          schema:
+            type: object
+            properties:
+              Nome:
+                type: string
+              Sobrenome:
+                type: string
+              Data_Nasc:
+                type: string
+              Telefone:
+                type: string
+              Email:
+                type: string
+      responses:
+        200:
+          description: Sucesso ao atualizar
+
+    delete:
+      operationId: api.clientes.delete
+      tags:
+        - Deleta Clientes Infinity Volts
+      summary: Deletar uma pessoa na lista de Clientes
+      description: Deleta uma pessoa
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: True
+      responses:
+        200:
+          description: Sucesso ao deletar
+
