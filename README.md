@@ -25,5 +25,5 @@ docker image build -t iv_user_onboarding .
 
 Now you can run the container image with this command
 ```shell
-docker run -p 8092:3001 iv_user_onboarding 
+docker run -p 8090:3001 iv_user_onboarding 
 ```
