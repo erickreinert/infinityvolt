@@ -1,8 +1,6 @@
 from datetime import datetime
-from flask import jsonify, make_response, abort, Response
+from flask import jsonify, make_response, abort
 from shortuuid import uuid
-import json
-from typing import List
 
 
 from domain.enums.status import Status
@@ -10,6 +8,7 @@ from domain.entities.user import User
 from usecases.userOnboarding import UserOnboarding
 from usecases.getAllUser import GetUsers
 from usecases.findByEmail import FindByEmail
+from usecases.findById import FindById
 from usecases.adapters.inMemoryRepository import InMemoryUserRepository
 
 def get_timestamp():
@@ -89,8 +88,14 @@ def find_by_email(email:str):
             404, "Usuário não encontrado"
         )
 
-def read_one():
-    return ""
+def read_one(id: str):
+    user = FindById(repo).execute(id)
+    if user != None:
+        return make_response(user.to_dict())
+    else:
+        return abort(
+            404, "Usuário não encontrado"
+        )
 
 def create(person: User):
     name = person.get("Nome", None)
@@ -100,20 +105,14 @@ def create(person: User):
     email = person.get("Email", None)
     id=str(uuid())
     newUser = User(id, name, lastName, birthdate, phone, email, Status.CREATED.value)
-    
     registerUseCase = UserOnboarding(newUser, repo)
-    
-    # for id in PEOPLE:
-    #     if Nome == PEOPLE[id]["Nome"] and Sobrenome == PEOPLE[id]["Sobrenome"]:            
-    #         # Cliente já existe
-    #         abort(
-    #             406,
-    #             "Pessoa com nome "+Nome+" e sobrenome "+Sobrenome+" ja existe"
-    #         )
-    #     else:
-    #         continue
-    
-    # Cliente nao existe, pode CRIAR:
+    existingUser = FindByEmail(repo).execute(email)
+
+    if existingUser != None:
+        return abort(
+            400,
+            "Usuário já existe"
+        )
 
     registerUseCase.execute(newUser)
     return make_response(

@@ -1,9 +1,9 @@
 from domain.entities.user import User
 from usecases.ports.userRepository import UserRepository
 
-class FindByEmail: 
+class FindById: 
     def __init__(self, repository: UserRepository):
         self.repository = repository
     
-    def execute(self, email: str) -> User: 
-        return self.repository.find_by_email(email)
+    def execute(self, id: str) -> User: 
+        return self.repository.find_by_id(id)

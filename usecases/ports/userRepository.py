@@ -11,6 +11,10 @@ class UserRepository(ABC):
         raise (NotImplementedError)
     
     @abstractmethod
+    def find_by_id(self, id):
+        raise (NotImplementedError)
+    
+    @abstractmethod
     def find_all(self):
         raise (NotImplementedError)
 

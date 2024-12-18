@@ -16,5 +16,10 @@ class InMemoryUserRepository(UserRepository):
             if user.email == email:
                 return user
     
+    def find_by_id(self, id) -> User:
+        for user in self.users:
+            if user.id == id:
+                return user
+    
     def find_all(self) -> List[User]:
         return self.users
