@@ -9,6 +9,7 @@ from domain.enums.status import Status
 from domain.entities.user import User
 from usecases.userOnboarding import UserOnboarding
 from usecases.getAllUser import GetUsers
+from usecases.findByEmail import FindByEmail
 from usecases.adapters.inMemoryRepository import InMemoryUserRepository
 
 def get_timestamp():
@@ -67,7 +68,7 @@ PEOPLE = {
 
 repo = InMemoryUserRepository()
 
-def read_all():
+def find_all():
     users = GetUsers(repo).execute()
     dict_clientes = [user.to_dict() for user in users]
     clientes = jsonify(dict_clientes)
@@ -77,17 +78,19 @@ def read_all():
     clientes.headers['Access-Control-Allow-Origin'] = '*'
     clientes.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     clientes.headers['Content-Range'] = content_range
-    return clientes
+    return make_response(clientes)
 
-def read_one(id):
-    if id in PEOPLE:
-        person = PEOPLE.get(id)
+def find_by_email(email:str):
+    user = FindByEmail(repo).execute(email.get("email", None))
+    if user != None:
+        return make_response(user.to_dict())
     else:
-        abort(
-            404, "Pessoa com ID {id} nao encontrada".format(id=id)
+        return abort(
+            404, "Usuário não encontrado"
         )
-    return person
 
+def read_one():
+    return ""
 
 def create(person: User):
     name = person.get("Nome", None)

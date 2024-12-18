@@ -6,12 +6,12 @@ from usecases.ports.userRepository import UserRepository
 
 class InMemoryUserRepository(UserRepository):
     def __init__(self):
-        self.users = []
+        self.users: List[User] = []
 
     def create(self, user: User):
         self.users.append(user)
 
-    def find_by_email(self, email):
+    def find_by_email(self, email) -> User:
         for user in self.users:
             if user.email == email:
                 return user

@@ -13,7 +13,7 @@ basePath: /
 paths:
   /clientes:
     get:
-      operationId: api.clientes.read_all
+      operationId: api.clientes.find_all
       tags:
         - Clientes Infinity Volts
       summary: Lista de Clientes
@@ -140,3 +140,26 @@ paths:
         200:
           description: Sucesso ao deletar
 
+  /clientes/buscar/email:
+    post:
+      operationId: api.clientes.find_by_email
+      tags:
+        - Filtro de clientes por email
+      summary: Filtra clientes registrados por email
+      description: Filtra clientes
+      parameters:
+        - name: email
+          in: body
+          description: Filtro por email
+          required: True
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: E-Mail
+      responses:
+        200:
+          description: Usuario encontrado
+        400:
+          description: Usuario nao encontrado
