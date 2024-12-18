@@ -1,5 +1,7 @@
+from typing import List
 from domain.entities.user import User
 from usecases.ports.userRepository import UserRepository
+
 
 
 class InMemoryUserRepository(UserRepository):
@@ -13,3 +15,6 @@ class InMemoryUserRepository(UserRepository):
         for user in self.users:
             if user.email == email:
                 return user
+    
+    def find_all(self) -> List[User]:
+        return self.users

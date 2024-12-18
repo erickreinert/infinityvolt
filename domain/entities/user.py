@@ -1,4 +1,5 @@
 from datetime import date
+
 class User: 
     def __init__(self, id, name, last_name, birthdate, phone, email, status):
         self.id = id
@@ -20,3 +21,5 @@ class User:
             "status": self.status,
             "dataRegistro": self.register
         }
+    
+    

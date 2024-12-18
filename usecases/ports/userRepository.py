@@ -9,6 +9,10 @@ class UserRepository(ABC):
     @abstractmethod
     def find_by_email(self, user_email):
         raise (NotImplementedError)
+    
+    @abstractmethod
+    def find_all(self):
+        raise (NotImplementedError)
 
     # @abstractmethod
     # def update(self, user_email, user: user):

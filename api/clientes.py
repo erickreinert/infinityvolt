@@ -1,10 +1,14 @@
 from datetime import datetime
-from flask import jsonify, make_response, abort
+from flask import jsonify, make_response, abort, Response
 from shortuuid import uuid
+import json
+from typing import List
+
 
 from domain.enums.status import Status
 from domain.entities.user import User
 from usecases.userOnboarding import UserOnboarding
+from usecases.getAllUser import GetUsers
 from usecases.adapters.inMemoryRepository import InMemoryUserRepository
 
 def get_timestamp():
@@ -61,8 +65,11 @@ PEOPLE = {
     },
 }
 
+repo = InMemoryUserRepository()
+
 def read_all():
-    dict_clientes = [PEOPLE[key] for key in sorted(PEOPLE.keys())]
+    users = GetUsers(repo).execute()
+    dict_clientes = [user.to_dict() for user in users]
     clientes = jsonify(dict_clientes)
     qtd = len(dict_clientes)
     content_range = "clientes 0-"+str(qtd)+"/"+str(qtd)
@@ -83,7 +90,6 @@ def read_one(id):
 
 
 def create(person: User):
-    repo = InMemoryUserRepository()
     name = person.get("Nome", None)
     lastName = person.get("Sobrenome", None)
     birthdate = person.get("Data_Nasc", None)
