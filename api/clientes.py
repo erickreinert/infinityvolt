@@ -2,6 +2,11 @@ from datetime import datetime
 from flask import jsonify, make_response, abort
 from shortuuid import uuid
 
+from domain.enums.status import Status
+from domain.entities.user import User
+from usecases.userOnboarding import UserOnboarding
+from usecases.adapters.inMemoryRepository import InMemoryUserRepository
+
 def get_timestamp():
     return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
 
@@ -77,37 +82,36 @@ def read_one(id):
     return person
 
 
-def create(person):
-    Nome = person.get("Nome", None)
-    Sobrenome = person.get("Sobrenome", None)
-    Data_nasc = person.get("Data_nasc", None)
-    Telefone = person.get("Telefone", None)
-    Email = person.get("Email", None)
-
-    for id in PEOPLE:
-        if Nome == PEOPLE[id]["Nome"] and Sobrenome == PEOPLE[id]["Sobrenome"]:            
-            # Cliente já existe
-            abort(
-                406,
-                "Pessoa com nome "+Nome+" e sobrenome "+Sobrenome+" ja existe"
-            )
-        else:
-            continue
+def create(person: User):
+    repo = InMemoryUserRepository()
+    name = person.get("Nome", None)
+    lastName = person.get("Sobrenome", None)
+    birthdate = person.get("Data_Nasc", None)
+    phone = person.get("Telefone", None)
+    email = person.get("Email", None)
+    id=str(uuid())
+    newUser = User(id, name, lastName, birthdate, phone, email, Status.CREATED.value)
+    
+    registerUseCase = UserOnboarding(newUser, repo)
+    
+    # for id in PEOPLE:
+    #     if Nome == PEOPLE[id]["Nome"] and Sobrenome == PEOPLE[id]["Sobrenome"]:            
+    #         # Cliente já existe
+    #         abort(
+    #             406,
+    #             "Pessoa com nome "+Nome+" e sobrenome "+Sobrenome+" ja existe"
+    #         )
+    #     else:
+    #         continue
     
     # Cliente nao existe, pode CRIAR:
-    id=str(uuid())
-    PEOPLE[id] = {
-        "id": id,
-        "Nome": Nome,
-        "Sobrenome": Sobrenome, 
-        "Data_nasc": Data_nasc,
-        "Telefone": Telefone,
-        "Email" : Email,
-        "timestamp": get_timestamp(),
-    }
+
+    registerUseCase.execute(newUser)
     return make_response(
-        PEOPLE[id],201
-        #"Cliente com nome "+fname+" e sobrenome "+lname+" criado com sucesso", 201
+        {
+            'status': 201,
+            'user': newUser.to_dict()
+        }
     )
 
 
@@ -136,4 +140,3 @@ def delete(id):
         abort(
             404, "Pessoa com sobrenome {Sobrenome} nao encontrada".format(id=id)
         )
-
