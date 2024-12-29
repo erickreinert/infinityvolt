@@ -11,7 +11,7 @@ This is the Infinity Volt Vehicle Register MS
 pip install -r requirements.txt
 python main.py
 ```
-You can see the project running in http://localhost:8091
+You can see the project running in http://localhost:8090
 
 ### Endpoints ###
 
