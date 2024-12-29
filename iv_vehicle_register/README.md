@@ -1,4 +1,4 @@
-# Infinity Volt Onboarding MS
+# Infinity Volt Vehicle Register MS
 
 This is the Infinity Volt Vehicle Register MS
 
