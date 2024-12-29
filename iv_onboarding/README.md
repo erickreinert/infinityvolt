@@ -1,6 +1,6 @@
 # Infinity Volt Onboarding MS
 
-This is the Infinity Volt Vehicle Register MS
+This is the Infinity Volt user onboarding MS
 
 ### Requirements ###
 * Python 3.12.4
@@ -11,7 +11,7 @@ This is the Infinity Volt Vehicle Register MS
 pip install -r requirements.txt
 python main.py
 ```
-You can see the project running in http://localhost:8091
+You can see the project running in http://localhost:8090
 
 ### Endpoints ###
 
@@ -20,10 +20,10 @@ You can see the project running in http://localhost:8091
 You can build the docker image with the below code.
 
 ```shell
-docker image build -t iv_vehicle_register .
+docker image build -t iv_user_onboarding .
 ```
 
 Now you can run the container image with this command
 ```shell
-docker run -p 8090:3001 iv_vehicle_register 
+docker run -p 8090:3001 iv_user_onboarding 
 ```
