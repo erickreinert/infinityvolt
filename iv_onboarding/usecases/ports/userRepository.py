@@ -18,6 +18,6 @@ class UserRepository(ABC):
     def find_all(self):
         raise (NotImplementedError)
 
-    # @abstractmethod
-    # def update(self, user_email, user: user):
-    #     raise (NotImplementedError)
+    @abstractmethod
+    def update(self, index, user: User) -> User:
+        raise (NotImplementedError)

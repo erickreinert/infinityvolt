@@ -27,15 +27,15 @@ paths:
               properties:
                 id:
                   type: string
-                Nome:
+                name:
                   type: string
-                Sobrenome:
+                lastname:
                   type: string
-                Data_Nasc:
+                birthdate:
                   type: string
-                Telefone:
+                phone:
                   type: string
-                Email:
+                email:
                   type: string
                 timestamp:
                   type: string
@@ -47,26 +47,26 @@ paths:
       summary: Cria uma pessoa e adiciona na lista de Clientes
       description: Adiciona na lista de Clientes
       parameters:
-        - name: person
+        - name: user
           in: body
           description: Pessoa a ser criada
           required: True
           schema:
             type: object
             properties:
-              Nome:
+              name:
                 type: string
                 description: Primeiro nome
-              Sobrenome:
+              lastname:
                 type: string
                 description: Ultimo nome
-              Data_Nasc:
+              birthdate:
                 type: string
                 description: Data Nascimento
-              Telefone:
+              phone:
                  type: string
                  description: Telefone
-              Email:
+              email:
                 type: string
                 description: E-Mail
       responses:
@@ -106,20 +106,20 @@ paths:
           description: Id do Cliente
           type: string
           required: True
-        - name: person
+        - name: user
           in: body
           schema:
             type: object
             properties:
-              Nome:
+              name:
                 type: string
-              Sobrenome:
+              lastname:
                 type: string
-              Data_Nasc:
+              birthdate:
                 type: string
-              Telefone:
+              phone:
                 type: string
-              Email:
+              email:
                 type: string
       responses:
         200:
