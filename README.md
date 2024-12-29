@@ -1,6 +1,6 @@
-# Infinity Volt Onboarding MS
+# Infinity Volt Monorepo Core
 
-This is the Infinity Volt monorepo Core
+This is the Infinity Volt Monorepo Core
 
 ### Requirements ###
 * Python 3.12.4
