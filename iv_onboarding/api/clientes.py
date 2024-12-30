@@ -9,6 +9,7 @@ from usecases.userOnboarding import UserOnboarding
 from usecases.getAllUser import GetUsers
 from usecases.findByEmail import FindByEmail
 from usecases.findById import FindById
+from usecases.updateUser import UpdateUser
 from usecases.adapters.inMemoryRepository import InMemoryUserRepository
 
 def get_timestamp():
@@ -97,12 +98,12 @@ def read_one(id: str):
             404, "Usuário não encontrado"
         )
 
-def create(person: User):
-    name = person.get("Nome", None)
-    lastName = person.get("Sobrenome", None)
-    birthdate = person.get("Data_Nasc", None)
-    phone = person.get("Telefone", None)
-    email = person.get("Email", None)
+def create(user: User):
+    name = user.get("name", None)
+    lastName = user.get("lastname", None)
+    birthdate = user.get("birthdate", None)
+    phone = user.get("phone", None)
+    email = user.get("email", None)
     id=str(uuid())
     newUser = User(id, name, lastName, birthdate, phone, email, Status.CREATED.value)
     registerUseCase = UserOnboarding(newUser, repo)
@@ -122,21 +123,19 @@ def create(person: User):
         }
     )
 
-
-def update(id, person):
-    if id in PEOPLE:
-        PEOPLE[id]["Nome"] = person.get("Nome")
-        PEOPLE[id]["Sobrenome"] = person.get("Sobrenome")
-        PEOPLE[id]["Data_nasc"] = person.get("Data_nasc")
-        PEOPLE[id]["Telefone"] = person.get("Telefone")
-        PEOPLE[id]["Email"] = person.get("Email")
-        PEOPLE[id]["timestamp"] = get_timestamp()
-
-        return PEOPLE[id]
-    else:
-        abort(
-            404, "Pessoa com {id} nao encontrada".format(id=id)
-        )
+def update(id, user: User):
+    userIndex = repo.find_index_by_id(id)
+    if(userIndex == -1):
+        return abort(404, "Usuário não encontrado")
+    UpdateUser(repo).execute(userIndex, user)
+    findByIdUseCase = FindById(repo).execute(id)
+    if findByIdUseCase != None:
+        return make_response(
+            {
+                'status': 200,
+                'user': findByIdUseCase.to_dict()
+            }
+    )
 
 def delete(id):
     if id in PEOPLE:

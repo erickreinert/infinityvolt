@@ -1,0 +1,18 @@
+services:
+  iv_onboarding:
+    build:
+      context: ./iv_onboarding
+      dockerfile: Dockerfile
+    ports:
+      - "8090:3001"
+    volumes:
+      - ./iv_onboarding:/app
+
+  iv_vehicle_register:
+    build:
+      context: ./iv_vehicle_register
+      dockerfile: Dockerfile
+    ports:
+      - "8091:3002"
+    volumes:
+      - ./iv_vehicle_register:/app
