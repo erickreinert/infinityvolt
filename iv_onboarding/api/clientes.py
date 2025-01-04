@@ -89,8 +89,8 @@ def find_by_email(email:str):
             404, "Usuário não encontrado"
         )
 
-def read_one(id: str):
-    user = FindById(repo).execute(id)
+def read_one(user_id: str):
+    user = FindById(repo).execute(user_id)
     if user != None:
         return make_response(user.to_dict())
     else:
@@ -104,8 +104,8 @@ def create(user: User):
     birthdate = user.get("birthdate", None)
     phone = user.get("phone", None)
     email = user.get("email", None)
-    id=str(uuid())
-    newUser = User(id, name, lastName, birthdate, phone, email, Status.CREATED.value)
+    user_id=str(uuid())
+    newUser = User(user_id, name, lastName, birthdate, phone, email, Status.CREATED.value)
     registerUseCase = UserOnboarding(newUser, repo)
     existingUser = FindByEmail(repo).execute(email)
 
@@ -123,12 +123,12 @@ def create(user: User):
         }
     )
 
-def update(id, user: User):
-    userIndex = repo.find_index_by_id(id)
+def update(user_id, user: User):
+    userIndex = repo.find_index_by_id(user_id)
     if(userIndex == -1):
         return abort(404, "Usuário não encontrado")
     UpdateUser(repo).execute(userIndex, user)
-    findByIdUseCase = FindById(repo).execute(id)
+    findByIdUseCase = FindById(repo).execute(user_id)
     if findByIdUseCase != None:
         return make_response(
             {
