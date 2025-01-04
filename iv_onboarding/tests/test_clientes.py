@@ -1,6 +1,9 @@
 from api.clientes import create, update, delete
 from domain.entities.user import User
 
+from werkzeug.exceptions import BadRequest
+
+import pytest
 from pytest_bdd import scenario, given, when, then
 
 @scenario('features/create.feature', 'Create new user')
@@ -32,3 +35,29 @@ def create_user(user):
     response = create(user)
 
     assert response == {'status': 201, 'user': user}
+
+@scenario('features/create.feature', 'Attempt to create duplicate user')
+def test_create_duplicate_user():
+    pass
+
+@given('an existing user account registered')
+def existing_account(user, first_name, birthdate, phone_number, email):
+    user['nome'] = first_name
+    user['nascimento'] = birthdate
+    user['telefone'] = phone_number
+    user['email'] = email
+
+    user_creation = create(user)
+
+@when('someone uses the existing user\'s email to register a new account')
+def duplicate_email(another_user, email):
+    another_user['nome'] = 'GIL'
+    another_user['nascimento'] = '29-07-1957'
+    another_user['telefone'] = '21929296764'
+    another_user['email'] = email
+
+@then('the system blocks the new registration')
+def create_duplicate(another_user):
+
+    with pytest.raises(BadRequest):
+        create(another_user)

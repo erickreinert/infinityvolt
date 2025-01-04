@@ -5,6 +5,10 @@ def user():
     return {}
 
 @pytest.fixture
+def another_user():
+    return {}
+
+@pytest.fixture
 def first_name():
     return 'JOSELITO'
 
