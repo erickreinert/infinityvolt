@@ -81,8 +81,8 @@ def create(person: dict):
     Ano = person.get("Ano", None)
     Autonomia = person.get("Autonomia", None)
     
-    user_id = str(uuid())
-    newUser = User(user_id, Marca, Modelo, Ano, Autonomia, Status.CREATED.value)
+    vehicle_id = str(uuid())
+    newUser = User(vehicle_id, Marca, Modelo, Ano, Autonomia, Status.CREATED.value)
     registerUseCase = UserOnboarding(newUser, repo)
     registerUseCase.execute(newUser)
     
@@ -92,21 +92,21 @@ def create(person: dict):
     })
 
 # Função para buscar um usuário por ID
-def read_one(user_id):
+def read_one(vehicle_id):
     users = {user.id: user for user in GetUsers(repo).execute()}
-    if user_id in users:
-        person = users[user_id].to_dict()
+    if vehicle_id in users:
+        person = users[vehicle_id].to_dict()
         return make_response(person)
     else:
-        abort(404, f"Pessoa com ID {user_id} não encontrada")
+        abort(404, f"Pessoa com ID {vehicle_id} não encontrada")
 
 
 
 # Função para atualizar um usuário existente
-def update(user_id, person):
+def update(vehicle_id, person):
     users = {user.id: user for user in repo.find_all()}
-    if user_id in users:
-        user = users[user_id]
+    if vehicle_id in users:
+        user = users[vehicle_id]
         # Atualiza os atributos do usuário
         user.Marca = person.get('Marca', user.Marca)
         user.Modelo = person.get('Modelo', user.Modelo)
@@ -116,22 +116,22 @@ def update(user_id, person):
         if repo.update(user.id, user):
             return make_response(user.to_dict())
         else:
-            abort(500, f'Erro ao atualizar o usuário com ID {user_id}')
+            abort(500, f'Erro ao atualizar o usuário com ID {vehicle_id}')
     else:
-        abort(404, f'Usuário com ID {user_id} não encontrado')
+        abort(404, f'Usuário com ID {vehicle_id} não encontrado')
 
 
 
 # Função para deletar um usuário
-def delete(user_id):
+def delete(vehicle_id):
     users = {user.id: user for user in repo.find_all()}
-    if user_id in users:
+    if vehicle_id in users:
         # Remove o usuário do repositório
-        if repo.delete(user_id):
-            return make_response(f'Usuário com ID {user_id} deletado com sucesso', 200)
+        if repo.delete(vehicle_id):
+            return make_response(f'Usuário com ID {vehicle_id} deletado com sucesso', 200)
         else:
-            abort(500, f'Erro ao deletar o usuário com ID {user_id}')
+            abort(500, f'Erro ao deletar o usuário com ID {vehicle_id}')
     else:
-        abort(404, f'Usuário com ID {user_id} não encontrado')
+        abort(404, f'Usuário com ID {vehicle_id} não encontrado')
 
 
