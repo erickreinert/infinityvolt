@@ -137,13 +137,13 @@ def update(user_id, user: User):
             }
     )
 
-def delete(id):
-    if id in PEOPLE:
-        del PEOPLE[id]
+def delete(user_id):
+    if user_id in PEOPLE:
+        del PEOPLE[user_id]
         return make_response(
-            "{id} deletado com sucesso".format(id=id), 200
+            "{id} deletado com sucesso".format(id=user_id), 200
         )
     else:
         abort(
-            404, "Pessoa com sobrenome {Sobrenome} nao encontrada".format(id=id)
+            404, "Pessoa com sobrenome {Sobrenome} nao encontrada".format(id=user_id)
         )
