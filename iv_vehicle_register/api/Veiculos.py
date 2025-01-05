@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import jsonify, make_response, abort
 from shortuuid import uuid
 from domain.enums.status import Status
-from domain.entities.user import User
+from domain.entities.vehicle import Vehicle
 from usecases.userOnboarding import UserOnboarding
 from usecases.getAllUser import GetUsers
 from usecases.adapters.inMemoryRepository import InMemoryUserRepository
@@ -75,14 +75,14 @@ def find_all():
     return make_response(clientes)
 
 # Função para criar um novo usuário
-def create(person: dict):
-    Marca = person.get("Marca", None)
-    Modelo = person.get("Modelo", None)
-    Ano = person.get("Ano", None)
-    Autonomia = person.get("Autonomia", None)
+def create(vehicle: dict):
+    Marca = vehicle.get("Marca", None)
+    Modelo = vehicle.get("Modelo", None)
+    Ano = vehicle.get("Ano", None)
+    Autonomia = vehicle.get("Autonomia", None)
     
     vehicle_id = str(uuid())
-    newUser = User(vehicle_id, Marca, Modelo, Ano, Autonomia, Status.CREATED.value)
+    newUser = Vehicle(vehicle_id, Marca, Modelo, Ano, Autonomia, Status.CREATED.value)
     registerUseCase = UserOnboarding(newUser, repo)
     registerUseCase.execute(newUser)
     

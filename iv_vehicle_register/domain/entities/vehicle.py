@@ -1,6 +1,6 @@
 from datetime import date
 
-class User:
+class Vehicle:
     def __init__(self, vehicle_id, Marca, Modelo, Ano, Autonomia, status):
         self.id = vehicle_id
         self.Marca = Marca

@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from domain.entities.user import User
+from domain.entities.vehicle import Vehicle
 
 class UserRepository(ABC):
     @abstractmethod
-    def create(self, user: User):
+    def create(self, user: Vehicle):
         raise (NotImplementedError)
 
     
