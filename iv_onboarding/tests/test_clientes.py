@@ -62,7 +62,7 @@ def create_duplicate(another_user):
     with pytest.raises(BadRequest):
         create(another_user)
 
-@scenario('features/update.featur', 'Update non-existing user')
+@scenario('features/update.feature', 'Update non-existing user')
 def test_update_non_existing_user():
     pass
 
