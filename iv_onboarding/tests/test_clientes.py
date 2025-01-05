@@ -80,3 +80,23 @@ def validate_user(non_existing_id):
     with pytest.raises(BadRequest):
         # User class won't be needed for validation
         update(non_existing_id, None)
+
+@scenario('features/update.feature', 'Update existing user')
+def test_update_user():
+    pass
+
+@given('an existing user in the database')
+def get_existing_id(existing_user_data):
+    user_instance = User(**existing_user_data)
+    create(**user_instance)
+
+@when('the system attempts to update their info')
+def update_user_handler(existing_user_data):
+    pass
+
+@then('the system returns a success code')
+def update_existing_user(existing_user_data):
+    user_instance = User(**existing_user_data)
+    response = update(existing_user_data['id'], user_instance)
+
+    assert response == {'status': 200, 'user': user_instance.to_dict()}

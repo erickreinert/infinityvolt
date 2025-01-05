@@ -27,3 +27,17 @@ def email():
 @pytest.fixture
 def non_existing_id():
     return '7jAdjCHbHyKKNd6ZV3Ud2b'
+
+@pytest.fixture
+def existing_user_data():
+    user_kwargs = {
+        'user_id': 'jAuq8nDQqXSDFw4xF3T8Rf',
+        'name': 'GIL',
+        'lastname': 'BROTHER',
+        'birthdate': '29-07-1957',
+        'phone': '21929296764',
+        'email': 'gil@away.com.br',
+        'status': 1
+    }
+
+    return user_kwargs
