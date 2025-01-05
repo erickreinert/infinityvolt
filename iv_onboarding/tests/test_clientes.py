@@ -66,11 +66,11 @@ def create_duplicate(another_user):
 def test_update_non_existing_user():
     pass
 
-@when('the system attempts to update a user info')
+@when('the system attempts to update their info')
 def get_update_id(non_existing_id):
     pass
 
-@when('the user does not exist in the database')
+@given('a non-existing user in the database')
 def non_existing_user(non_existing_id):
     pass
 

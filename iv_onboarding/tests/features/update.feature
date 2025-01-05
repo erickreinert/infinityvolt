@@ -1,10 +1,10 @@
 Feature: Update user
   Scenario: Update non-existing user
-    When the system attempts to update a user info
-    And the user does not exist in the database
+    Given a non-existing user in the database
+    When the system attempts to update their info
     Then the system raises a warning message
 
   Scenario: Update existing user
-    When the system attempts to update a user info
-    And the user exists in the database
-    Then the system return a success code
+    Given an existing user in the database
+    When the system attempts to update their info
+    Then the system returns a success code
