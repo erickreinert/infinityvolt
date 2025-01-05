@@ -1,4 +1,4 @@
-from api.clientes import create, update, delete
+from api.clientes import create, update, delete, id1
 from domain.entities.user import User
 
 from werkzeug.exceptions import BadRequest
@@ -100,3 +100,38 @@ def update_existing_user(existing_user_data):
     response = update(existing_user_data['id'], user_instance)
 
     assert response == {'status': 200, 'user': user_instance.to_dict()}
+
+@scenario('features/delete.feature', 'Attempt to delete non-existing user')
+def test_delete_non_existing_user():
+    pass
+
+@given('a user does not exist in the database')
+def non_existing_user_to_delete(non_existing_id):
+    pass
+
+@when('the system attempts to delete them')
+def delete_handler():
+    pass
+
+@then('the system raises a warning message')
+def delete_non_existing_user(non_existing_id):
+    with pytest.raises(BadRequest):
+        delete(non_existing_id)
+
+@scenario('features/delete.feature', 'Delete existing user')
+def test_delete_existing_user():
+    pass
+
+@given('a user exists in the database')
+def existing_user():
+    assert id1 is not None
+
+@then('the system deletes the user')
+def delete_existing_handler():
+    pass
+
+@then('returns a success code')
+def delete_existing_user():
+    response = delete(id1)
+
+    assert response == {f"{id1} deletado com sucesso", 200}
