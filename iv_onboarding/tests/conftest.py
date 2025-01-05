@@ -23,3 +23,7 @@ def phone_number():
 @pytest.fixture
 def email():
     return 'joselito@semnocao.com.br'
+
+@pytest.fixture
+def non_existing_id():
+    return '7jAdjCHbHyKKNd6ZV3Ud2b'

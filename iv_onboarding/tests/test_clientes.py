@@ -61,3 +61,22 @@ def create_duplicate(another_user):
 
     with pytest.raises(BadRequest):
         create(another_user)
+
+@scenario('features/update.featur', 'Update non-existing user')
+def test_update_non_existing_user():
+    pass
+
+@when('the system attempts to update a user info')
+def get_update_id(non_existing_id):
+    pass
+
+@when('the user does not exist in the database')
+def non_existing_user(non_existing_id):
+    pass
+
+@then('the system raises a warning message')
+def validate_user(non_existing_id):
+
+    with pytest.raises(BadRequest):
+        # User class won't be needed for validation
+        update(non_existing_id, None)
