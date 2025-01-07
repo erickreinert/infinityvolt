@@ -1,0 +1,20 @@
+version: "3"
+services:
+  bff:
+    build: .
+    command: "npm run start"
+    working_dir: /bff/
+    environment:
+      - NODE_ENV=production
+      - TZ=America/Sao_Paulo
+    expose:
+      - "9040"
+    ports:
+      - "9040:3001"
+    container_name: bff-api
+    restart: always
+    networks:
+      - minha_rede_personalizada
+networks:
+  minha_rede_personalizada:
+    external: true
