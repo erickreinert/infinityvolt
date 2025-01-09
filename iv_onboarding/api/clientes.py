@@ -2,6 +2,11 @@ from datetime import datetime
 from flask import jsonify, make_response, abort
 from shortuuid import uuid
 
+from uuid import uuid4 as uuid
+from flask import abort
+from datetime import datetime
+from usecases.findByValidate import FindByValidate
+
 
 from domain.enums.status import Status
 from domain.entities.user import User
@@ -98,7 +103,14 @@ def read_one(id: str):
             404, "Usuário não encontrado"
         )
 
-def create(user: User):
+def create(user: dict):
+ try:
+    # Valida os campos do usuário
+    
+
+    validator = FindByValidate(user)
+    validator.validate()
+
     name = user.get("name", None)
     lastName = user.get("lastname", None)
     birthdate = user.get("birthdate", None)
@@ -122,6 +134,11 @@ def create(user: User):
             'user': newUser.to_dict()
         }
     )
+
+ except ValueError as e:
+        return abort(400, str(e))
+
+
 
 def update(id, user: User):
     userIndex = repo.find_index_by_id(id)
