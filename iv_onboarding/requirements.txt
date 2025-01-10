@@ -8,3 +8,4 @@ injector
 flask_cors
 shortuuid
 gunicorn
+flask_sqlalchemy
