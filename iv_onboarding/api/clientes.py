@@ -5,11 +5,14 @@ from shortuuid import uuid
 from uuid import uuid4 as uuid
 from flask import abort
 from datetime import datetime
-from usecases.findByValidate import FindByValidate
-
 
 from domain.enums.status import Status
 from domain.entities.user import User
+from domain.validators.email import Email
+from domain.validators.dateFormat import DateFormat
+from domain.validators.phoneFormat import PhoneFormat
+from domain.validators.requiredFields import RequiredFields
+from domain.validators.validator import Validator
 from usecases.userOnboarding import UserOnboarding
 from usecases.getAllUser import GetUsers
 from usecases.findByEmail import FindByEmail
@@ -86,6 +89,7 @@ def find_all():
     return make_response(clientes)
 
 def find_by_email(email:str):
+    Email.validate(email.get("email", None))
     user = FindByEmail(repo).execute(email.get("email", None))
     if user != None:
         return make_response(user.to_dict())
@@ -103,20 +107,25 @@ def read_one(id: str):
             404, "Usuário não encontrado"
         )
 
-def create(user: dict):
+def create(user: User):
  try:
-    # Valida os campos do usuário
+    errors = Validator.validate(user)
+
+    if errors != []:
+        return make_response(
+            {
+                'status': 400,
+                'errors': errors
+            }
+        )
     
-
-    validator = FindByValidate(user)
-    validator.validate()
-
     name = user.get("name", None)
     lastName = user.get("lastname", None)
     birthdate = user.get("birthdate", None)
     phone = user.get("phone", None)
     email = user.get("email", None)
     id=str(uuid())
+
     newUser = User(id, name, lastName, birthdate, phone, email, Status.CREATED.value)
     registerUseCase = UserOnboarding(newUser, repo)
     existingUser = FindByEmail(repo).execute(email)
