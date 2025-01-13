@@ -12,7 +12,7 @@ Vehicle Register - iv_vehicle_register
 
 ### Build and Run (development) ###
 ```shell
-cd [[directory_name]]
+cd {{directory_name}}
 pip install -r requirements.txt
 python main.py
 ```
