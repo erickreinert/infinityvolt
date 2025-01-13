@@ -58,6 +58,7 @@ export default class UserService {
       );
       return res.data.id
     } catch (error) {
+      console.log(error)
       if (isAxiosError(error)) {
         console.log(error.response?.data.detail);
       }

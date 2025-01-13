@@ -2,17 +2,19 @@
 
 import Navbar from '@/components/ui/navbar';
 import { Car, User } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Profile() {
-  const accessToken = localStorage.getItem('accessToken');
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!accessToken) {
+    const token = localStorage.getItem('accessToken');
+    setAccessToken(token);
+
+    if (!token) {
       location.href = 'login';
     }
-  }, [accessToken]);
-
+  }, []);
   return (
     <div className="text-white">
       {accessToken ? (

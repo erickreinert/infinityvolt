@@ -12,7 +12,7 @@ export default function useLogin() {
     setIsLoading(true);
     try {
       const res = await axios.post(
-        'http://localhost:8092/api/user/login',
+        process.env.NEXT_PUBLIC_BFF_URL + '/user/login',
         formData,
       );
       toast({
