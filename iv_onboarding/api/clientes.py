@@ -12,6 +12,7 @@ from usecases.findById import FindById
 from usecases.updateUser import UpdateUser
 from usecases.adapters.inMemoryRepository import InMemoryUserRepository
 
+import json
 def get_timestamp():
     return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
 
@@ -110,18 +111,25 @@ def create(user: User):
     existingUser = FindByEmail(repo).execute(email)
 
     if existingUser != None:
-        return abort(
-            400,
-            "Usuário já existe"
+        response = make_response(
+            json.dumps({
+                'status': 400,
+                'message': "Usuário já existe"
+            }),
+            400
         )
+        return response
 
     registerUseCase.execute(newUser)
-    return make_response(
-        {
+    response = make_response(
+        json.dumps({
             'status': 201,
             'user': newUser.to_dict()
-        }
+        }),
+        201
     )
+    response.content_type = 'application/json'
+    return response
 
 def update(user_id, user: User):
     userIndex = repo.find_index_by_id(user_id)

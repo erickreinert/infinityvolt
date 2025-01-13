@@ -19,5 +19,4 @@ class User:
             "nascimento": self.birthdate,
             "telefone": self.phone,
             "status": self.status,
-            "dataRegistro": self.register
         }

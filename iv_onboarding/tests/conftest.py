@@ -1,7 +1,22 @@
 import pytest
+from infra.app import create_app
+
+@pytest.fixture
+def app():
+    app = create_app() 
+    with app.app.app_context():
+        yield app
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
 
 @pytest.fixture
 def user():
+    return {}
+
+@pytest.fixture
+def duplicated_user():
     return {}
 
 @pytest.fixture
@@ -23,6 +38,10 @@ def phone_number():
 @pytest.fixture
 def email():
     return 'joselito@semnocao.com.br'
+
+@pytest.fixture
+def duplicated_email():
+    return 'joselito2@semnocao.com.br'
 
 @pytest.fixture
 def non_existing_id():
