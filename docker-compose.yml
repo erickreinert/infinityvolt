@@ -54,6 +54,17 @@ services:
     volumes:
       - ./iv_vehicle_register:/app
     depends_on: [kafka]
+  
+  iv_bff:
+      build:
+        context: ./iv_bff
+        dockerfile: Dockerfile
+      ports:
+        - "8092:3003"
+      networks:
+        - kafka_network
+      depends_on: [kafka]
+
 
 
 
