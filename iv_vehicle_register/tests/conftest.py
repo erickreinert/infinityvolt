@@ -26,3 +26,7 @@ def model_year():
 @pytest.fixture
 def vehicle_autonomy():
     return 400
+
+@pytest.fixture
+def non_existing_id():
+    return 'gcWp3RSAkpjVzDiRe59DXn'
