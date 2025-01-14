@@ -4,12 +4,25 @@ import { Button } from '@/components/ui/button';
 import Card from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
+import Loading from '@/components/ui/loading';
+import useLogin from '@/hooks/use-login';
+import IFormularioLogin from '@/interfaces/IFormularioLogin';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Login() {
-  const { toast } = useToast();
+  const { isLoading, sendData } = useLogin();
+  const [formData, setFormData] = useState<IFormularioLogin>({
+    email: '',
+    senha: '',
+  });
+
+  const handleChange = (field: string, value: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
 
   return (
     <Card>
@@ -27,21 +40,26 @@ export default function Login() {
             id="email"
             type="email"
             placeholder="teste@teste.com"
+            value={formData.email}
+            onChange={(e) => handleChange('email', e.target.value)}
           />
         </div>
         <div>
           <Label htmlFor="password">Senha</Label>
-          <Input name="password" id="password" type="password" placeholder="" />
+          <Input
+            name="password"
+            id="password"
+            type="password"
+            placeholder=""
+            value={formData.senha}
+            onChange={(e) => handleChange('senha', e.target.value)}
+          />
         </div>
         <Button
-          onClick={() =>
-            toast({
-              title: 'Bem vindo!',
-              description: 'Login realizado com sucesso!',
-            })
-          }
+          disabled={formData.email.length <= 0 || formData.senha.length <= 0}
+          onClick={() => sendData(formData)}
         >
-          Entrar
+          {isLoading ? <Loading /> : <p>Entrar</p>}
         </Button>
 
         <a href="/cadastrar" className="text-xs font-medium text-center">

@@ -3,6 +3,6 @@ import userRouter from '../modules/user/user.router'
 
 const router = express.Router()
 
-router.use("/cadastro", userRouter)
+router.use("/user", userRouter)
 
 export default router
