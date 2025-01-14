@@ -11,6 +11,7 @@ export default function useCadastro() {
   async function sendData(formData: IFormularioRegistro) {
     setIsLoading(true);
     try {
+      console.log(JSON.stringify(formData))
       await axios.post(process.env.NEXT_PUBLIC_BFF_URL + '/user', formData);
       toast({
         title: 'Sucesso!',

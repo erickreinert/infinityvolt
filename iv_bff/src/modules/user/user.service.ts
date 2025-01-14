@@ -18,7 +18,8 @@ export default class UserService {
     };
 
     try {
-      await http.post(process.env.MS_USER_URL + "/clientes", payload);
+      const res = await http.post(process.env.MS_USER_URL + "/clientes", payload);
+      console.log(res.data)
       return true;
     } catch (error) {
       console.log(error);

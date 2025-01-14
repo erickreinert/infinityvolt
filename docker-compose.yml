@@ -51,6 +51,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8091:3002"
+    networks:
+      - kafka_network
     volumes:
       - ./iv_vehicle_register:/app
     depends_on: [kafka]
