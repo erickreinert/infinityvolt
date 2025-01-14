@@ -69,8 +69,9 @@ services:
     build:
       context: ./iv_onboarding
       dockerfile: Dockerfile
-      
+
     environment:
+      DATABASE_URL: mysql://root:root@db:3031/database
       DB_HOST: db
       DB_PORT: 3031
       DB_USER: root
@@ -87,6 +88,13 @@ services:
     build:
       context: ./iv_vehicle_register
       dockerfile: Dockerfile
+
+    environment:
+      DATABASE_URL: mysql://root:root@db:3032/database
+      DB_HOST: db
+      DB_PORT: 3032
+      DB_USER: root
+      DB_PASSWORD: root
     ports:
       - "8091:3002"
     volumes:
