@@ -116,7 +116,8 @@ def create(user: User):
             {
                 'status': 400,
                 'errors': errors
-            }
+            },
+            400
         )
     
     name = user.get("name", None)
