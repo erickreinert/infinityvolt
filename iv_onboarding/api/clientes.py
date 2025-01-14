@@ -153,5 +153,5 @@ def delete(user_id):
         )
     else:
         abort(
-            404, "Pessoa com sobrenome {Sobrenome} nao encontrada".format(id=user_id)
+            404, "Pessoa nao encontrada".format(id=user_id)
         )
