@@ -66,14 +66,14 @@ services:
       - app_network
 
   iv_onboarding:
+    container_name: iv_onboarding
     build:
       context: ./iv_onboarding
       dockerfile: Dockerfile
-
     environment:
-      DATABASE_URL: mysql://root:root@db:3031/database
-      DB_HOST: db
-      DB_PORT: 3031
+      DATABASE_URL: mysql+pymysql://root:root@iv_onboarding_db:3306/iv_onboarding_db
+      DB_HOST: iv_onboarding_db
+      DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: root
     ports:
@@ -85,20 +85,23 @@ services:
     depends_on: [kafka, iv_onboarding_db]
 
   iv_vehicle_register:
+    container_name: iv_vehicle_register
     build:
       context: ./iv_vehicle_register
       dockerfile: Dockerfile
 
     environment:
-      DATABASE_URL: mysql://root:root@db:3032/database
-      DB_HOST: db
-      DB_PORT: 3032
+      DATABASE_URL: mysql+pymysql://root:root@iv_vehicle_register_db:3306/iv_vehicle_register_db
+      DB_HOST: iv_vehicle_register_db
+      DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: root
     ports:
       - "8091:3002"
     volumes:
       - ./iv_vehicle_register:/app
+    networks:
+      - app_network
     depends_on: [kafka, iv_vehicle_register_db]
 
 

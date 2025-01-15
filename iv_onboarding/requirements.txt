@@ -10,3 +10,6 @@ shortuuid
 gunicorn
 flask_sqlalchemy
 confluent-kafka
+pymysql
+cryptography
+

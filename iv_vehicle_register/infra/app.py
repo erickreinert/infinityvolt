@@ -10,12 +10,12 @@ def create_app() -> connexion:
     app.add_api('user_service.yml', resolver=RestyResolver('api'))
     CORS(app.app, resources={r'/api/*': {'origins': '*'}}, methods=['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'])
 
-    app.app.config['SQLALCHEMY_DATABASE_URI'] = os.environ('DATABASE_URL')
+    app.app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
     app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app.app)
 
-    with app.app.app.context():
+    with app.app.app_context():
         db.create_all()
 
     return app
