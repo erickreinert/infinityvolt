@@ -16,5 +16,4 @@ def create_app() -> connexion:
     db.init_app(app.app)
     with app.app.app_context():
         db.create_all()
-
     return app

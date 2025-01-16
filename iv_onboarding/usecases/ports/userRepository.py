@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from domain.entities.user import User
+from domain.entities.users import Users
 
 class UserRepository(ABC):
     @abstractmethod
-    def create(self, user: User):
+    def create(self, user: Users):
         raise (NotImplementedError)
 
     @abstractmethod
@@ -19,5 +19,9 @@ class UserRepository(ABC):
         raise (NotImplementedError)
 
     @abstractmethod
-    def update(self, index, user: User) -> User:
+    def update(self, index, user: Users) -> Users:
+        raise (NotImplementedError)
+    
+    @abstractmethod
+    def delete(self, index) -> Users:
         raise (NotImplementedError)
