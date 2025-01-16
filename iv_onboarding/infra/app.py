@@ -3,6 +3,7 @@ import connexion
 from connexion.resolver import RestyResolver
 from flask_cors import CORS
 from models.db import db
+from domain.entities.users import Users
 import os
 
 def create_app() -> connexion:
@@ -15,5 +16,6 @@ def create_app() -> connexion:
 
     db.init_app(app.app)
     with app.app.app_context():
+        db.drop_all()
         db.create_all()
     return app

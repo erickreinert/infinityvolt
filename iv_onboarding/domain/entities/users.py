@@ -1,8 +1,7 @@
 from datetime import datetime
 from models.db import db
-
-class Users(db.Model):  # Herdando de db.Model
-    __tablename__ = "users"  # Nome da tabela no banco
+class Users(db.Model):
+    __tablename__ = "users" 
 
     user_id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(120), nullable=False)

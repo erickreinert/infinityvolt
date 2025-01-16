@@ -1,0 +1,41 @@
+swagger: '2.0'
+info:
+  description: Swagger file
+  version: 1.0.0
+  title: Swagger Rest Veículos Infinity Volts
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: /
+paths:
+  /Veiculos:
+    post:
+      operationId: api.Veiculos.create 
+      tags:
+        - Adiciona veículos Infinity Volts
+      summary: Cria um veículo e adiciona na lista de veículos
+      description: Adiciona na lista de veículos
+      parameters:
+        - name: vehicle
+          in: body
+          description: Modelo de Veículo
+          required: True
+          schema:
+            type: object
+            properties:
+              brand:
+                type: string
+                description: Marca do carro
+              model:
+                type: string
+                description: Modelo de Veículo
+              year:
+                type: string
+                description: Ano de Fabricação
+              autonomy:
+                type: number
+                description: Autonomia do Veículo
+      responses:
+        201:
+          description: Sucesso ao criar
