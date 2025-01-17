@@ -1,8 +1,9 @@
 import http from "../../config/http"
 
 export default class UserService {
-  async cadastrarUsuario(email: string, nome: string, sobrenome: string, dataNascimento: string, telefone: string) {
+  async cadastrarUsuario(email: string, nome: string, sobrenome: string, dataNascimento: string, telefone: string, uuid:string) {
     const payload = {
+        "correlation_id": uuid,
         "name": nome,
         "lastname": sobrenome,
         "birthdate": dataNascimento,
@@ -18,16 +19,17 @@ export default class UserService {
     }
 
   }
-  async cadastrarVeiculo(marca: string, modelo: string, ano: string, autonomia: string) {
+  async cadastrarVeiculo(marca: string, modelo: string, ano: string, autonomia: string, uuid:string) {
     const payload = {
-      "Marca": marca,
-      "Modelo": modelo,
-      "Ano": ano,
-      "Autonomia": autonomia
+      "correlation_id": uuid,
+      "brand_name": marca,
+      "model_name": modelo,
+      "model_year": ano,
+      "autonomy": autonomia
     }
 
   try {
-    await http.post(process.env.MS_VEHICLE_URL + "/Veiculos", payload)    
+    await http.post(process.env.MS_VEHICLE_URL + "/veiculos", payload)    
     return true  
   } catch (error) {
     return false

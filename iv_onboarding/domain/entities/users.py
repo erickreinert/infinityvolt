@@ -5,6 +5,7 @@ class Users(db.Model):
 
     user_id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(120), nullable=False)
+    correlation_id = db.Column(db.String(36), unique=True, nullable=False)
     lastname = db.Column(db.String(120), nullable=False)
     birthdate = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), nullable=False)
@@ -12,7 +13,8 @@ class Users(db.Model):
     register_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     status = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, user_id, name, lastname, birthdate, phone, email, status):
+    def __init__(self, user_id, name, lastname, birthdate, phone, email, status, correlation_id):
+        self.correlation_id = correlation_id
         self.user_id = user_id
         self.name = name
         self.lastname = lastname
@@ -24,6 +26,7 @@ class Users(db.Model):
     def to_dict(self):
         return {
             "user_id": self.user_id,
+            "correlation_id": self.correlation_id,
             "name": self.name,
             "lastname": self.lastname,
             "birthdate": self.birthdate,

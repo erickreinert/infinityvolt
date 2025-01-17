@@ -69,6 +69,9 @@ paths:
               email:
                 type: string
                 description: E-Mail
+              correlation_id:
+                type: string
+                description: Id de correlacao
       responses:
         201:
           description: Sucesso ao criar

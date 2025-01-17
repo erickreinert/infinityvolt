@@ -12,6 +12,10 @@ class VehiclesRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
+    def find_by_id(self, id) -> Vehicles:
+        raise (NotImplementedError)
+    
+    @abstractmethod
     def delete(self, veichles_id):
         raise NotImplementedError
     

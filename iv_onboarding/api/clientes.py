@@ -80,9 +80,10 @@ def create(user: Users):
     birthdate = user.get("birthdate", None)
     phone = user.get("phone", None)
     email = user.get("email", None)
+    correlation_id = user.get("correlation_id", None)
     id=str(uuid())
 
-    newUser = Users(id, name, lastName, birthdate, phone, email, Status.CREATED.value)
+    newUser = Users(id, name, lastName, birthdate, phone, email, Status.CREATED.value, correlation_id)
     registerUseCase = UserOnboarding(newUser, dbRepo)
     existingUser = FindByEmail(dbRepo).execute(email)
 
