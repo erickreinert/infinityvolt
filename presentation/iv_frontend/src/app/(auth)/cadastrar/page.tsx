@@ -6,12 +6,14 @@ import EtapaDados from './components/etapaDados';
 import EtapaSenha from './components/etapaSenha';
 import EtapaVeiculo from './components/etapaVeiculo';
 import IFormularioRegistro from '@/interfaces/IFormularioRegistro';
+import EtapaFinal from './components/etapaFinal';
 
 // Etapas
 // 0: email
 // 1: dados do usuario
 // 2: senha
 // 3: cadastro do veiculo
+// 4: fim
 
 export default function Cadastrar() {
   const [etapa, setEtapa] = useState<number>(0);
@@ -74,7 +76,7 @@ export default function Cadastrar() {
           handleChange={handleChange}
         />
       );
-    default:
+    case 3:
       return (
         <EtapaVeiculo
           voltar={handleVoltar}
@@ -82,6 +84,10 @@ export default function Cadastrar() {
           formData={formData}
           handleChange={handleChange}
         />
+      );
+    default:
+      return (
+        <EtapaFinal/>
       );
   }
 }

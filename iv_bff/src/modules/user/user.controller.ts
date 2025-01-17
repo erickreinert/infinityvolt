@@ -31,12 +31,16 @@ export default class UserController {
       autonomia
     );
 
-    if (usuario && veiculo) {
+    if (usuario === true && veiculo === true) {
       return res
         .status(200)
         .json({ message: "Cadastro realizado com sucesso" });
     } else {
-      return res.status(500).json({ message: "Erro ao cadastrar" });
+      console.log("usuario ")
+      console.log(usuario)
+      console.log("veiculo ")
+      console.log(veiculo)
+      return res.status(400).json({ message: "Erro ao cadastrar" });
     }
   }
 

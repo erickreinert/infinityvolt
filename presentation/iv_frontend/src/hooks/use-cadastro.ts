@@ -8,7 +8,7 @@ export default function useCadastro() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  async function sendData(formData: IFormularioRegistro) {
+  async function sendData(formData: IFormularioRegistro, callback: () => void) {
     setIsLoading(true);
     try {
       console.log(JSON.stringify(formData))
@@ -17,7 +17,8 @@ export default function useCadastro() {
         title: 'Sucesso!',
         description: 'Cadastro realizado!',
       });
-      location.href = '/login';
+      callback()
+      // location.href = '/login';
     } catch (error) {
       console.log(error);
     } finally {
