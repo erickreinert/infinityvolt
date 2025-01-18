@@ -2,6 +2,7 @@ import connexion
 from connexion.resolver import RestyResolver
 from flask_cors import CORS
 from models.db import db
+from domain.entities.users import Users
 import os
 
 def create_app() -> connexion:
