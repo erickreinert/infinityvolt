@@ -18,5 +18,5 @@ def delete_handler():
 @then('the system raises a warning message')
 def delete_non_existing_user(non_existing_id, app):
     with app.app.app_context():
-        with pytest.raises(NotFound):
-            delete(non_existing_id)
+        response = delete(non_existing_id)
+        assert response.status_code == 404, f"Expected 404 but got {response}"

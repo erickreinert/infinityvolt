@@ -64,7 +64,6 @@ def read_one(id: str):
 def create(user: Users):
  try:
     errors = Validator.validate(user)
-    print(errors)
     if errors != []:
         return make_response(
             {
@@ -88,10 +87,10 @@ def create(user: Users):
 
     if existingUser != None:
         return make_response(
-            {
-                400,
-                "Este email já esta em uso"
-            },
+            json.dumps({
+                'status': 400,
+                'error': "Este email ja esta em uso"
+            }),
             400
         )
 
@@ -130,9 +129,20 @@ def update(id, user: Users):
                 'status': 200,
                 'user': findByIdUseCase.to_dict()
             }
-    )
+        )
 
 def delete(id):
+    
+    existingUser = FindById(dbRepo).execute(id)
+    if existingUser is None:
+        response = make_response(
+            json.dumps({
+                'status': 404,
+                'message': "Este usuário nao existe"
+            }),
+            404
+        )
+        return response
     DeleteUser(dbRepo).execute(id)
     return make_response(
             {
