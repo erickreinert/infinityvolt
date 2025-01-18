@@ -1,6 +1,4 @@
 from api.clientes import delete
-from werkzeug.exceptions import NotFound
-import pytest
 from pytest_bdd import scenario, given, when, then
 
 @scenario('features/delete.feature', 'Attempt to delete non-existing user')

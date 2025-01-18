@@ -121,13 +121,22 @@ def update(id, user: Users):
             400
         )
     
-    UpdateUser(dbRepo).execute(id, user)
     findByIdUseCase = FindById(dbRepo).execute(id)
+    if existingUser is None:
+        response = make_response(
+            json.dumps({
+                'status': 404,
+                'message': "Este usuário nao existe"
+            }),
+            404
+        )
+        return response
+    UpdateUser(dbRepo).execute(id, user)
     if findByIdUseCase != None:
         return make_response(
             {
                 'status': 200,
-                'user': findByIdUseCase.to_dict()
+                'user': user.to_dict()
             }
         )
 

@@ -1,7 +1,5 @@
 from api.clientes import update
-import pytest
 from pytest_bdd import scenario, given, when, then
-from werkzeug.exceptions import NotFound
 
 @scenario('features/update.feature', 'Update non-existing user')
 def test_update_non_existing_user():
@@ -16,8 +14,8 @@ def non_existing_user(non_existing_id):
     pass
 
 @then('the system raises a warning message')
-def validate_user(non_existing_id, app):
+def validate_user(non_existing_id, app, user):
 
     with app.app.app_context():
-        with pytest.raises(NotFound):
-            update(non_existing_id, None)
+        response = update(non_existing_id, user)
+        assert response.status_code == 404, f"Expected 404 but got {response}"
