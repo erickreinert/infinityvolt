@@ -8,7 +8,7 @@ import Loading from '@/components/ui/loading';
 import useLogin from '@/hooks/use-login';
 import IFormularioLogin from '@/interfaces/IFormularioLogin';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Login() {
   const { isLoading, sendData } = useLogin();
@@ -23,6 +23,13 @@ export default function Login() {
       [field]: value,
     }));
   };
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('accessToken');
+    if (token) {
+      location.href = "/map"
+    }
+  }, []);
 
   return (
     <Card>

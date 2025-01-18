@@ -44,7 +44,7 @@ export default class UserService {
       brand_name: marca,
       model_name: modelo,
       model_year: ano,
-      autonomy: autonomia,
+      autonomy: Number(autonomia),
       correlation_id: correlationId
     };
 
@@ -68,7 +68,7 @@ export default class UserService {
         process.env.MS_USER_URL + "/clientes/buscar/email",
         payload
       );
-      return res.data.id;
+      return res.data.user_id;
     } catch (error) {
       console.log(error);
       if (isAxiosError(error)) {

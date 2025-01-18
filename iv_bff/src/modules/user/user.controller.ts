@@ -33,15 +33,15 @@ export default class UserController {
       correlationId
     );
 
+    console.log("usuario ")
+    console.log(usuario)
+    console.log("veiculo ")
+    console.log(veiculo)
     if (usuario === true && veiculo === true) {
       return res
         .status(200)
         .json({ message: "Cadastro realizado com sucesso" });
     } else {
-      console.log("usuario ")
-      console.log(usuario)
-      console.log("veiculo ")
-      console.log(veiculo)
       return res.status(400).json({ message: "Erro ao cadastrar" });
     }
   }
@@ -50,7 +50,7 @@ export default class UserController {
     const { email, senha } = req.body;
 
     const accessToken = await this.service.login(email, senha);
-
+    
     if (accessToken) {
       return res
         .status(200)

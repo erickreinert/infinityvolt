@@ -17,14 +17,14 @@ export default function useLogin() {
       );
       toast({
         title: 'Sucesso!',
-        description: 'Cadastro realizado!',
+        description: 'Login realizado!',
       });
 
       const accessToken = res.data.accessToken;
 
-      localStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('accessToken', accessToken);
 
-      location.href = '/profile';
+      location.href = '/map';
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
