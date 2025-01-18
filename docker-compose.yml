@@ -1,7 +1,39 @@
 networks:
-  kafka_network:
+  app_network:
     driver: bridge
+volumes:
+  iv_onboarding_db:
+  iv_vehicle_register_db:
+
 services:
+  iv_onboarding_db:
+    image: mysql
+    restart: always
+    container_name: iv_onboarding_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: iv_onboarding_db
+    volumes:
+      - iv_onboarding_db:/var/lib/mysql
+    ports:
+      - "3031:3306"
+    networks:
+      - app_network
+
+  iv_vehicle_register_db:
+    image: mysql
+    restart: always
+    container_name: iv_vehicle_register_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: iv_vehicle_register_db
+    volumes:
+      - iv_vehicle_register_db:/var/lib/mysql
+    ports:
+      - "3032:3306"
+    networks:
+      - app_network
+
   kafka-ui:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
@@ -12,7 +44,7 @@ services:
       KAFKA_CLUSTERS_0_NAME: kafka
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     networks:
-      - kafka_network
+      - app_network
 
   kafka:
     image: apache/kafka:latest
@@ -31,31 +63,47 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_NUM_PARTITIONS: 3
     networks:
-      - kafka_network
+      - app_network
 
   iv_onboarding:
+    container_name: iv_onboarding
     build:
       context: ./iv_onboarding
       dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: mysql+pymysql://root:root@iv_onboarding_db:3306/iv_onboarding_db
+      DB_HOST: iv_onboarding_db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
     ports:
       - "8090:3001"
     volumes:
       - ./iv_onboarding:/app
     networks:
-      - kafka_network
-    depends_on: [kafka]
+      - app_network
+    depends_on: [kafka, iv_onboarding_db]
 
   iv_vehicle_register:
+    container_name: iv_vehicle_register
     build:
       context: ./iv_vehicle_register
       dockerfile: Dockerfile
+
+    environment:
+      DATABASE_URL: mysql+pymysql://root:root@iv_vehicle_register_db:3306/iv_vehicle_register_db
+      DB_HOST: iv_vehicle_register_db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
     ports:
       - "8091:3002"
     networks:
-      - kafka_network
+      - app_network
     volumes:
       - ./iv_vehicle_register:/app
-  
+    depends_on: [kafka, iv_vehicle_register_db]
+
   iv_bff:
       build:
         context: ./iv_bff
@@ -63,7 +111,7 @@ services:
       ports:
         - "8092:3003"
       networks:
-        - kafka_network
+        - app_network
       depends_on: [kafka]
   iv_frontend:
       build:
@@ -72,5 +120,5 @@ services:
       ports:
         - "8093:3000"
       networks:
-        - kafka_network
+        - app_network
       depends_on: [kafka]
