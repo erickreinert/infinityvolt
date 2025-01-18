@@ -5,6 +5,7 @@ Feature: Create a new user
     * a user fills up a birthdate
     * a user fills up a phone number
     * a user fills up an e-mail
+    * a user fills up an correlation id
     Then the system creates the user and returns a success code
 
   Scenario: Attempt to create duplicate user

@@ -1,10 +1,20 @@
 import pytest
 from infra.app import create_app
-import os
+from unittest.mock import MagicMock
+
 @pytest.fixture
 def app(monkeypatch):
     monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
-    app = create_app() 
+    mock_producer = MagicMock()
+    mock_producer.produce = MagicMock(return_value=None)
+    mock_producer.flush = MagicMock(return_value=None)
+    def mock_producer_init(*args, **kwargs):
+        return mock_producer
+    monkeypatch.setattr("confluent_kafka.Producer", mock_producer_init)
+    def mock_send_broker_message(*args, **kwargs):
+        print("Mensagem Kafka mockada", args, kwargs)
+    monkeypatch.setattr("usecases.adapters.userRepository.UserRepository.sendBrokerMessage", mock_send_broker_message)
+    app = create_app()
     with app.app.app_context():
         yield app
 
@@ -29,16 +39,24 @@ def first_name():
     return 'JOSELITO'
 
 @pytest.fixture
+def last_name():
+    return 'Teste'
+
+@pytest.fixture
 def birthdate():
     return '05-08-1974'
 
 @pytest.fixture
 def phone_number():
-    return '21888666888'
+    return '11968372700'
 
 @pytest.fixture
 def email():
     return 'joselito@semnocao.com.br'
+
+@pytest.fixture
+def correlation_id():
+    return '50'
 
 @pytest.fixture
 def duplicated_email():

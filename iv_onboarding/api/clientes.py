@@ -64,7 +64,7 @@ def read_one(id: str):
 def create(user: Users):
  try:
     errors = Validator.validate(user)
-
+    print(errors)
     if errors != []:
         return make_response(
             {
