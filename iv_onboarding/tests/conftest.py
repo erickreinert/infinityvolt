@@ -1,9 +1,9 @@
 import pytest
 from infra.app import create_app
-
+import os
 @pytest.fixture
-def app(mocker):
-    mocker.patch("os.environ")
+def app(monkeypatch):
+    monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
     app = create_app() 
     with app.app.app_context():
         yield app
