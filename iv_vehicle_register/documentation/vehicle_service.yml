@@ -11,6 +11,8 @@ basePath: /
 paths:
   /veiculos/owner/{id}:
     get:
+      tags:
+        - Busca veiculos vinculados ao proprietario
       operationId: api.Veiculos.find_by_owner
       parameters:
         - name: id
