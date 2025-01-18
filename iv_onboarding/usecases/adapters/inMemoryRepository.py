@@ -1,5 +1,5 @@
 from typing import List
-from domain.entities.user import User
+from domain.entities.users import Users
 from usecases.ports.userRepository import UserRepository
 from confluent_kafka import Producer
 import json
@@ -16,23 +16,23 @@ class InMemoryUserRepository(UserRepository):
     producer = Producer(producer_config)    
 
     def __init__(self):
-        self.users: List[User] = []
+        self.users: List[Users] = []
             
-    def create(self, user: User):
+    def create(self, user: Users):
         self.users.append(user)
         self.sendBrokerMessage(user.to_dict(), 'iv_onboarding')
 
-    def find_by_email(self, email) -> User:
+    def find_by_email(self, email) -> Users:
         for user in self.users:
             if user.email == email:
                 return user
     
-    def find_by_id(self, id) -> User:
+    def find_by_id(self, id) -> Users:
         for user in self.users:
             if user.id == id:
                 return user
     
-    def find_all(self) -> List[User]:
+    def find_all(self) -> List[Users]:
         return self.users
     
     def find_index_by_id(self, id):
@@ -40,7 +40,7 @@ class InMemoryUserRepository(UserRepository):
         result = user_index.get(id, -1)
         return result
 
-    def update(self, index, user: User):
+    def update(self, index, user: Users):
         print(f"Atualizando o usuário com índice {index}: {user['name']}")
         self.users[index].name = user['name']
         self.users[index].email = user['email']
@@ -61,3 +61,6 @@ class InMemoryUserRepository(UserRepository):
             print(f"Erro: {e}")
         finally:
             self.producer.flush()
+
+    def delete(self, index):
+        return super().delete(index)

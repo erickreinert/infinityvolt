@@ -8,7 +8,8 @@ export default class UserService {
     nome: string,
     sobrenome: string,
     dataNascimento: string,
-    telefone: string
+    telefone: string,
+    correlationId:string
   ) {
     const payload = {
       name: nome,
@@ -16,6 +17,7 @@ export default class UserService {
       birthdate: dayjs(dataNascimento).format("DD-MM-YYYY"),
       phone: telefone,
       email: email,
+      correlation_id: correlationId
     };
 
     try {
@@ -35,17 +37,19 @@ export default class UserService {
     marca: string,
     modelo: string,
     ano: string,
-    autonomia: string
+    autonomia: string,
+    correlationId: string
   ) {
     const payload = {
-      Marca: marca,
-      Modelo: modelo,
-      Ano: ano,
-      Autonomia: autonomia,
+      brand_name: marca,
+      model_name: modelo,
+      model_year: ano,
+      autonomy: autonomia,
+      correlation_id: correlationId
     };
 
     try {
-      await http.post(process.env.MS_VEHICLE_URL + "/Veiculos", payload);
+      await http.post(process.env.MS_VEHICLE_URL + "/veiculos", payload);
       return true;
     } catch (error) {
       if (isAxiosError(error)) {

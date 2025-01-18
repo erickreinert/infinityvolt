@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import UserService from "./user.service";
-
+const { v4: uuidv4 } = require('uuid');
 export default class UserController {
   private service = new UserService();
 
@@ -16,19 +16,21 @@ export default class UserController {
       autonomia,
       ano,
     } = req.body;
-
+    const correlationId = uuidv4()
     const usuario = await this.service.cadastrarUsuario(
       email,
       nome,
       sobrenome,
       dataNascimento,
-      telefone
+      telefone,
+      correlationId
     );
     const veiculo = await this.service.cadastrarVeiculo(
       marca,
       modelo,
       ano,
-      autonomia
+      autonomia,
+      correlationId
     );
 
     if (usuario === true && veiculo === true) {
