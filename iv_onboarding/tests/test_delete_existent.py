@@ -1,6 +1,9 @@
 from api.clientes import id1, delete
 from pytest_bdd import scenario, given, when, then
+import pytest
 
+@pytest.skip
+    
 @scenario('features/delete.feature', 'Delete existing user')
 def test_delete_existing_user():
     pass

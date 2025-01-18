@@ -1,27 +1,24 @@
-from typing import List, Optional
-from domain.entities.vehicle import Vehicle
-from usecases.ports.userRepository import UserRepository
+from typing import List
+from domain.entities.veichle import Vehicles
+from usecases.ports.vehiclesRepository import VehiclesRepository
 
-class InMemoryUserRepository(UserRepository):
+class InMemoryVehiclesRepository():
     def __init__(self):
-        self.users: List[Vehicle] = []
+        self.vehicles: List[Vehicles] = []
 
-    def create(self, user: Vehicle):
-        self.users.append(user)
+    def create(self, vehicles: Vehicles):
+        self.vehicles.append(vehicles)
 
-    def find_all(self) -> List[Vehicle]:
-        return self.users
-
-    def update(self, user_id: int, updated_user: Vehicle) -> bool:
-        for index, existing_user in enumerate(self.users):
-            if existing_user.id == user_id:
-                self.users[index] = updated_user
+    def update(self, vehicles_id: int, updated_vehicles: Vehicles) -> bool:
+        for index, existing_vehicles in enumerate(self.vehicles):
+            if existing_vehicles.id == vehicles_id:
+                self.vehicles[index] = updated_vehicles
                 return True
         return False
 
-    def delete(self, user_id: int) -> bool:
-        for index, existing_user in enumerate(self.users):
-            if existing_user.id == user_id:
-                del self.users[index]
+    def delete(self, vehicles_id: int) -> bool:
+        for index, existing_vehicles in enumerate(self.vehicles):
+            if existing_vehicles.id == vehicles_id:
+                del self.vehicles[index]
                 return True
         return False

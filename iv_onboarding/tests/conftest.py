@@ -2,7 +2,8 @@ import pytest
 from infra.app import create_app
 
 @pytest.fixture
-def app():
+def app(mocker):
+    mocker.patch("os.environ")
     app = create_app() 
     with app.app.app_context():
         yield app

@@ -1,0 +1,109 @@
+swagger: '2.0'
+info:
+  description: Swagger file
+  version: 1.0.0
+  title: Swagger Rest Veículos Infinity Volts
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: /
+paths:
+  /veiculos:
+    post:
+      operationId: api.Veiculos.create 
+      tags:
+        - Adiciona veículos Infinity Volts
+      summary: Cria um veículo e adiciona na lista de veículos
+      description: Adiciona na lista de veículos
+      parameters:
+        - name: vehicle
+          in: body
+          description: Modelo de Veículo
+          required: True
+          schema:
+            type: object
+            properties:
+              correlation_id:
+                type: string
+                description: Id de correlacao
+              brand_name:
+                type: string
+                description: Marca do carro
+              model_name:
+                type: string
+                description: Modelo de Veículo
+              model_year:
+                type: string
+                description: Ano de Fabricação
+              autonomy:
+                type: number
+                description: Autonomia do Veículo
+      responses:
+        201:
+          description: Sucesso ao criar
+  /veiculos/{id}:
+    get:
+      operationId: api.Veiculos.find_by_id
+      tags:
+        - Leitura de Veiculo Infinity Volts
+      summary: Leitura de um veiculo da base de Veiculos
+      description: Leitura de um veiculo
+      parameters:
+        - name: id
+          in: path
+          description: Id do veiculo
+          type: string
+          required: True
+      responses:
+        200:
+          description: Sucesso na leitura do veículo
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+    put:
+      operationId: api.Veiculos.update
+      tags:
+        - Alteração de Veiculos Infinity Volts
+      summary: Update na lista de Veiculos
+      description: Update na lista
+      parameters:
+        - name: id
+          in: path
+          description: Id do Veiculo
+          type: string
+          required: True
+        - name: vehicle
+          in: body
+          schema:
+            type: object
+            properties:
+              brand_name:
+                type: string
+              model_name:
+                type: string
+              model_year:
+                type: string
+              autonomy:
+                type: number
+      responses:
+        200:
+          description: Sucesso ao atualizar
+
+    delete:
+      operationId: api.Veiculos.delete
+      tags:
+        - Deleta Veiculo Infinity Volts
+      summary: Deletar um Veiculo
+      description: Delete
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: True
+      responses:
+        200:
+          description: Sucesso ao deletar
+

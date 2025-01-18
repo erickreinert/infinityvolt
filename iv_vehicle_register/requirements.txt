@@ -10,3 +10,7 @@ shortuuid
 gunicorn
 pytest
 pytest-bdd
+flask_sqlalchemy
+pymysql
+cryptography
+confluent-kafka
