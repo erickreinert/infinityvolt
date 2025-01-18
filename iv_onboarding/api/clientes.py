@@ -1,10 +1,8 @@
-from datetime import datetime
 from flask import jsonify, make_response, abort
 from shortuuid import uuid
 
 from uuid import uuid4 as uuid
 from flask import abort
-from datetime import datetime
 
 from domain.enums.status import Status
 from domain.entities.users import Users
@@ -19,7 +17,7 @@ from usecases.deleteUser import DeleteUser
 from usecases.adapters.inMemoryRepository import InMemoryUserRepository
 from usecases.adapters.userRepository import UserRepository
 from models.db import db
-
+import json
 
 repo = InMemoryUserRepository()
 dbRepo = UserRepository(db.session)
@@ -66,7 +64,6 @@ def read_one(id: str):
 def create(user: Users):
  try:
     errors = Validator.validate(user)
-
     if errors != []:
         return make_response(
             {
@@ -90,20 +87,23 @@ def create(user: Users):
 
     if existingUser != None:
         return make_response(
-            {
-                400,
-                "Este email já esta em uso"
-            },
+            json.dumps({
+                'status': 400,
+                'error': "Este email ja esta em uso"
+            }),
             400
         )
 
     registerUseCase.execute(newUser)
-    return make_response(
-        {
+    response = make_response(
+        json.dumps({
             'status': 201,
             'user': newUser.to_dict()
-        }
+        }),
+        201
     )
+    response.content_type = 'application/json'
+    return response
 
  except ValueError as e:
         return abort(400, str(e))
@@ -121,17 +121,37 @@ def update(id, user: Users):
             400
         )
     
-    UpdateUser(dbRepo).execute(id, user)
     findByIdUseCase = FindById(dbRepo).execute(id)
+    if existingUser is None:
+        response = make_response(
+            json.dumps({
+                'status': 404,
+                'message': "Este usuário nao existe"
+            }),
+            404
+        )
+        return response
+    UpdateUser(dbRepo).execute(id, user)
     if findByIdUseCase != None:
         return make_response(
             {
                 'status': 200,
-                'user': findByIdUseCase.to_dict()
+                'user': user.to_dict()
             }
-    )
+        )
 
 def delete(id):
+    
+    existingUser = FindById(dbRepo).execute(id)
+    if existingUser is None:
+        response = make_response(
+            json.dumps({
+                'status': 404,
+                'message': "Este usuário nao existe"
+            }),
+            404
+        )
+        return response
     DeleteUser(dbRepo).execute(id)
     return make_response(
             {

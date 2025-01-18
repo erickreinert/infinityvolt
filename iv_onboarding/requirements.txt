@@ -8,8 +8,9 @@ injector
 flask_cors
 shortuuid
 gunicorn
+pytest
+pytest-bdd
 flask_sqlalchemy
 confluent-kafka
 pymysql
 cryptography
-

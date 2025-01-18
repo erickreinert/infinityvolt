@@ -48,7 +48,6 @@ class UserRepository(UserRepository):
             findedUser.birthdate = user_data['birthdate']
             findedUser.phone = user_data['phone']
             findedUser.email = user_data['email']
-            
             self.db_session.commit()
             self.db_session.refresh(findedUser)
         return findedUser
@@ -56,9 +55,7 @@ class UserRepository(UserRepository):
     def delete(self, index):
         findedUser = self.db_session.query(Users).filter(Users.user_id == index).first()
         if findedUser:
-            # Atualizando os campos individualmente
             findedUser.status = Status.DEACTIVATED.value
-            
             self.db_session.commit()
             self.db_session.refresh(findedUser)
         return findedUser

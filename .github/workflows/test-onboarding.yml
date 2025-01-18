@@ -1,0 +1,30 @@
+name: 🧪 Onboarding Unit Testing
+
+on: push
+
+jobs:
+  test:
+    name: Repository Checks
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.13"]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2.2.2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: 📥 Install Requirements
+      run: pip install -r iv_onboarding/requirements.txt
+
+    - name: 🫙 Set up cache
+      uses: actions/cache@v2.1.6
+      with:
+        path: .venv
+        key: venv-${{ matrix.python-version }}-vehicles
+
+    - name: ☑️ Run tests
+      run: pytest iv_onboarding/tests

@@ -9,6 +9,40 @@ produces:
   - application/json
 basePath: /
 paths:
+  /veiculos/owner/{id}:
+    get:
+      tags:
+        - Busca veiculos vinculados ao proprietario
+      operationId: api.Veiculos.find_by_owner
+      parameters:
+        - name: id
+          in: path
+          description: Id do proprietario
+          type: string
+          required: True
+      responses:
+        200:
+          description: Sucesso na leitura de Clientes
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                brand_name:
+                  type: string
+                model_name:
+                  type: string
+                model_year:
+                  type: string
+                autonomy:
+                  type: string
+                status: 
+                  type: string
+                register_date:
+                  type: string
+                owner_id:
+                  type: string
   /veiculos:
     post:
       operationId: api.Veiculos.create 
@@ -91,7 +125,6 @@ paths:
       responses:
         200:
           description: Sucesso ao atualizar
-
     delete:
       operationId: api.Veiculos.delete
       tags:
@@ -106,4 +139,6 @@ paths:
       responses:
         200:
           description: Sucesso ao deletar
+
+
 
