@@ -1,10 +1,12 @@
 from datetime import datetime
+import json
 from flask import jsonify, make_response, abort
 from uuid import uuid4 as uuid
 from domain.enums.status import Status
 from domain.entities.veichle import Vehicles
 from usecases.vehiclesRegister import VehiclesRegister
 from usecases.findById import FindById
+from usecases.findByOwner import FindByOwner
 from usecases.updateVehicle import UpdateVehicle
 from usecases.deleteVehicle import DeleteVehicle
 from usecases.adapters.vehicleRepository import VehicleRepository
@@ -50,8 +52,18 @@ def find_by_id(id: str):
         )
     
 def update(id, vehicle: Vehicles):
-    UpdateVehicle(repo).execute(id, vehicle)
     findByIdUseCase = FindById(repo).execute(id)
+    if findByIdUseCase is None:
+        response = make_response(
+            json.dumps({
+                'status': 404,
+                'message': "Este veiculo nao existe"
+            }),
+            404
+        )
+        return response
+    
+    UpdateVehicle(repo).execute(id, vehicle)
     if findByIdUseCase != None:
         return make_response(
             {
@@ -68,3 +80,15 @@ def delete(id):
             },
             200
     )
+
+def find_by_owner(id: str):
+    vehicles = FindByOwner(repo).execute(id)
+    dict_vehicles = [vehicle.to_dict() for vehicle in vehicles]
+    vehiclesJson = jsonify(dict_vehicles)
+    qtd = len(dict_vehicles)
+    content_range = "vehicles 0-"+str(qtd)+"/"+str(qtd)
+    # Configura headers
+    vehiclesJson.headers['Access-Control-Allow-Origin'] = '*'
+    vehiclesJson.headers['Access-Control-Expose-Headers'] = 'Content-Range'
+    vehiclesJson.headers['Content-Range'] = content_range
+    return make_response(vehiclesJson)
