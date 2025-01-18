@@ -4,8 +4,8 @@ import json
 
 def create_consumer():
     consumer_config = {
-        'bootstrap.servers': 'localhost:9093',
-        'group.id': 'user-registration-group',
+        'bootstrap.servers': 'kafka:9092',
+        'group.id': 'iv_onboarding-group',
         'auto.offset.reset': 'earliest',
     }
     return Consumer(consumer_config)
@@ -13,10 +13,10 @@ def create_consumer():
 # Função para processar mensagens
 def consume_messages():
     consumer = create_consumer()
-    consumer.subscribe(['user-registration'])  # Tópico a ser consumido
+    consumer.subscribe(['iv_onboarding'])  # Tópico a ser consumido
 
     try:
-        print("Aguardando mensagens do tópico 'user-registration'...")
+        print("Aguardando mensagens do tópico 'iv_onboarding'...")
         while True:
             # Poll busca mensagens do Kafka
             message = consumer.poll(timeout=1.0)
@@ -46,7 +46,7 @@ def consume_messages():
 
 # Função para realizar ações com os dados recebidos
 def process_user_data(user_data):
-    message = f"Processando usuário: Nome={user_data['nome']}, Email={user_data['email']}, Marca do veículo: {user_data['marca']}, Modelo do veículo: {user_data['modelo']}"
+    message = f"Usuário Cadastro: \n\nNome={user_data['nome']}\nE-mail={user_data['email']}"
     enviar_mensagem(message)
 
 # Iniciar o consumer

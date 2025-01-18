@@ -122,3 +122,10 @@ services:
       networks:
         - app_network
       depends_on: [kafka]
+  iv_teams:
+      build:
+        context: ./iv_teams
+        dockerfile: Dockerfile
+      networks:
+        - app_network
+      depends_on: [kafka]

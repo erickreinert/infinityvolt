@@ -46,6 +46,7 @@ export default function EtapaVeiculo({
   voltar,
   formData,
   handleChange,
+  proximo
 }: Props) {
   const {isLoading, sendData} = useCadastro()
   return (
@@ -135,7 +136,7 @@ export default function EtapaVeiculo({
             isLoading
           }
           onClick={() => {
-            sendData(formData);
+            sendData(formData, () => proximo(4));
           }}
         >
           {isLoading ? <Loading /> : <p>Cadastrar</p>}
