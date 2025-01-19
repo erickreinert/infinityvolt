@@ -9,7 +9,7 @@ export default class UserService {
     sobrenome: string,
     dataNascimento: string,
     telefone: string,
-    correlationId:string
+    correlationId: string
   ) {
     const payload = {
       name: nome,
@@ -17,7 +17,7 @@ export default class UserService {
       birthdate: dayjs(dataNascimento).format("DD-MM-YYYY"),
       phone: telefone,
       email: email,
-      correlation_id: correlationId
+      correlation_id: correlationId,
     };
 
     try {
@@ -45,7 +45,7 @@ export default class UserService {
       model_name: modelo,
       model_year: ano,
       autonomy: Number(autonomia),
-      correlation_id: correlationId
+      correlation_id: correlationId,
     };
 
     try {
@@ -55,6 +55,16 @@ export default class UserService {
       if (isAxiosError(error)) {
         return error.response?.data.errors;
       }
+      return false;
+    }
+  }
+
+  async buscarInfosUsuario(userId: string) {
+    try {
+      const res = await http.get(process.env.MS_USER_URL + "/clientes/" + userId)
+      return res.data
+    } catch (error) {
+      console.log(error);
       return false;
     }
   }

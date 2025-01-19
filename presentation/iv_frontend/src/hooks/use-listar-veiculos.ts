@@ -3,11 +3,11 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function useListarVeiculos() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingVehicle, setIsLoadingVehicle] = useState(false)
   const [listaVeiculos, setListaVeiculos] = useState<IVeiculo[]>([])
 
-  async function fetchData(userId: string) {
-    setIsLoading(true);
+  async function fetchVehicles(userId: string) {
+    setIsLoadingVehicle(true);
     try {
       const res = await axios.get(process.env.NEXT_PUBLIC_BFF_URL + '/vehicle/owner/' + userId);
       console.log(res.data)
@@ -16,9 +16,9 @@ export default function useListarVeiculos() {
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      setIsLoadingVehicle(false);
     }
   }
 
-  return {fetchData, isLoading, listaVeiculos}
+  return {fetchVehicles, isLoadingVehicle, listaVeiculos}
 }

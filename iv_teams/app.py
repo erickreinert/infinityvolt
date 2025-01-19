@@ -1,10 +1,21 @@
+from confluent_kafka.admin import AdminClient, NewTopic
 from confluent_kafka import Consumer, KafkaException, KafkaError
-from messenger import enviar_mensagem
 import json
+
+KAFKA_BROKER = 'kafka:9092'
+TOPIC = 'iv_onboarding'
+
+def ensure_topic_exists():
+    admin_client = AdminClient({'bootstrap.servers': KAFKA_BROKER})
+    topic_metadata = admin_client.list_topics(timeout=5)
+    
+    if TOPIC not in topic_metadata.topics:
+        print(f"Tópico '{TOPIC}' não existe. Criando...")
+        new_topic = NewTopic(TOPIC, num_partitions=1, replication_factor=1)
 
 def create_consumer():
     consumer_config = {
-        'bootstrap.servers': 'kafka:9092',
+        'bootstrap.servers': KAFKA_BROKER,
         'group.id': 'iv_onboarding-group',
         'auto.offset.reset': 'earliest',
     }
@@ -13,7 +24,7 @@ def create_consumer():
 # Função para processar mensagens
 def consume_messages():
     consumer = create_consumer()
-    consumer.subscribe(['iv_onboarding'])  # Tópico a ser consumido
+    consumer.subscribe([TOPIC])  # Tópico a ser consumido
 
     try:
         print("Aguardando mensagens do tópico 'iv_onboarding'...")

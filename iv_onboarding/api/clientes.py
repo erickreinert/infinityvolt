@@ -111,18 +111,18 @@ def create(user: Users):
 
 
 def update(id, user: Users):
-    existingUser = FindByEmail(dbRepo).execute(user.get("email", None))
-    if existingUser != None:
-        return make_response(
-            {
-                400,
-                "Este email já esta em uso"
-            },
-            400
-        )
-    
+    # existingUser = FindByEmail(dbRepo).execute(user.get("email", None))
+    # if existingUser != None:
+    #     response = make_response(
+    #         json.dumps({
+    #             'status': 400,
+    #             'message': "Este email já esta em uso"
+    #         }),
+    #         400
+    #     )
+    #     return response    
     findByIdUseCase = FindById(dbRepo).execute(id)
-    if existingUser is None:
+    if findByIdUseCase is None:
         response = make_response(
             json.dumps({
                 'status': 404,
@@ -133,12 +133,14 @@ def update(id, user: Users):
         return response
     UpdateUser(dbRepo).execute(id, user)
     if findByIdUseCase != None:
-        return make_response(
-            {
+        response = make_response(
+            json.dumps({
                 'status': 200,
                 'user': user.to_dict()
-            }
+            }),
+            400
         )
+    return response
 
 def delete(id):
     

@@ -1,4 +1,5 @@
 import IVeiculo from '@/interfaces/IVeiculo';
+import capitalizarTexto from '@/utils/capitalizarTexto';
 import { Car } from 'lucide-react';
 
 interface Props {
@@ -11,8 +12,8 @@ export default function Veiculo({ data }: Props) {
       <div className="flex items-center gap-3">
         <Car size={80} />
         <div className="leading-none">
-          <h4 className="text-2xl font-bold leading-none">{data.brand_name}</h4>
-          <p className="text-lg leading-none">{data.model_name}</p>
+          <h4 className="text-2xl font-bold leading-none">{capitalizarTexto(data.brand_name)}</h4>
+          <p className="text-lg leading-none">{capitalizarTexto(data.model_name)}</p>
         </div>
       </div>
       <div className="text-end">

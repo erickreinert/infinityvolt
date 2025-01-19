@@ -122,8 +122,8 @@ paths:
                 type: string
               phone:
                 type: string
-              email:
-                type: string
+              # email:
+              #   type: string
       responses:
         200:
           description: Sucesso ao atualizar
