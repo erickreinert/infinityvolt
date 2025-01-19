@@ -47,7 +47,6 @@ class UserRepository(UserRepository):
             findedUser.lastname = user_data['lastname']
             findedUser.birthdate = user_data['birthdate']
             findedUser.phone = user_data['phone']
-            # findedUser.email = user_data['email']
             self.db_session.commit()
             self.db_session.refresh(findedUser)
         return findedUser
