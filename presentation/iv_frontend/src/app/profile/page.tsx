@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import Veiculo from './components/Veiculo';
 import useBuscarUsuario from '@/hooks/use-buscar-usuario';
 import { User } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Profile() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -47,6 +48,9 @@ export default function Profile() {
                   </div>
                 </div>
               )}
+              <div>
+                <Link href={"/profile/edit"}>Editar</Link>
+              </div>
             </div>
             <div>
               <h4 className="text-xl font-bold">Seus veículos:</h4>

@@ -5,6 +5,7 @@ from confluent_kafka import Consumer, KafkaError
 from models.db import db
 from domain.entities.veichle import Vehicles
 from sqlalchemy.exc import SQLAlchemyError
+from domain.enums.status import Status
 
 def consume_messages(app):
     with app.app.app_context():
@@ -48,6 +49,7 @@ def process_message(message: bytes):
 
         if vehicle:
             vehicle.owner_id = user_id  
+            vehicle.status = Status.ACTIVE.value
             db.session.commit() 
             print(f"Veículo {correlation_id} atualizado com o ID do usuário {user_id}")
         else:

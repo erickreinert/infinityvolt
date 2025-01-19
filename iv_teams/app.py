@@ -1,21 +1,11 @@
 from confluent_kafka.admin import AdminClient, NewTopic
 from confluent_kafka import Consumer, KafkaException, KafkaError
+from messenger import enviar_mensagem
 import json
-
-KAFKA_BROKER = 'kafka:9092'
-TOPIC = 'iv_onboarding'
-
-def ensure_topic_exists():
-    admin_client = AdminClient({'bootstrap.servers': KAFKA_BROKER})
-    topic_metadata = admin_client.list_topics(timeout=5)
-    
-    if TOPIC not in topic_metadata.topics:
-        print(f"Tópico '{TOPIC}' não existe. Criando...")
-        new_topic = NewTopic(TOPIC, num_partitions=1, replication_factor=1)
 
 def create_consumer():
     consumer_config = {
-        'bootstrap.servers': KAFKA_BROKER,
+        'bootstrap.servers': 'kafka:9092',
         'group.id': 'iv_onboarding-group',
         'auto.offset.reset': 'earliest',
     }
@@ -24,7 +14,7 @@ def create_consumer():
 # Função para processar mensagens
 def consume_messages():
     consumer = create_consumer()
-    consumer.subscribe([TOPIC])  # Tópico a ser consumido
+    consumer.subscribe(['iv_onboarding'])  # Tópico a ser consumido
 
     try:
         print("Aguardando mensagens do tópico 'iv_onboarding'...")
@@ -40,7 +30,8 @@ def consume_messages():
                     # Fim da partição (não é erro crítico)
                     continue
                 else:
-                    raise KafkaException(message.error())
+                    print(f"Erro: {message.error()}")
+                    continue
             
             # Mensagem recebida com sucesso
             print(f"Mensagem recebida: {message.value().decode('utf-8')}")
@@ -57,7 +48,7 @@ def consume_messages():
 
 # Função para realizar ações com os dados recebidos
 def process_user_data(user_data):
-    message = f"Usuário Cadastro: \n\nNome={user_data['nome']}\nE-mail={user_data['email']}"
+    message = f"Usuário Cadastro: \n\nNome={user_data['name']}\nE-mail={user_data['email']}"
     enviar_mensagem(message)
 
 # Iniciar o consumer
