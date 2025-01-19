@@ -113,15 +113,15 @@ services:
       networks:
         - app_network
       depends_on: [kafka]
-  # iv_frontend:
-  #     build:
-  #       context: ./presentation/iv_frontend
-  #       dockerfile: Dockerfile
-  #     ports:
-  #       - "8093:3000"
-  #     networks:
-  #       - app_network
-  #     depends_on: [kafka]
+  iv_frontend:
+      build:
+        context: ./presentation/iv_frontend
+        dockerfile: Dockerfile
+      ports:
+        - "8093:3000"
+      networks:
+        - app_network
+      depends_on: [kafka]
   iv_teams:
       build:
         context: ./iv_teams

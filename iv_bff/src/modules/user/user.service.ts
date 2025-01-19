@@ -33,6 +33,34 @@ export default class UserService {
       return false;
     }
   }
+  async editarUsuario(
+    nome: string,
+    sobrenome: string,
+    dataNascimento: string,
+    telefone: string,
+    userId: string
+  ) {
+    const payload = {
+      name: nome,
+      lastname: sobrenome,
+      birthdate: dayjs(dataNascimento).format("DD-MM-YYYY"),
+      phone: telefone,
+      
+    };
+
+    try {
+      const res = await http.put(
+        process.env.MS_USER_URL + "/clientes/" + userId,
+        payload
+      );
+      return true;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        return error.response?.data.errors;
+      }
+      return false;
+    }
+  }
   async cadastrarVeiculo(
     marca: string,
     modelo: string,

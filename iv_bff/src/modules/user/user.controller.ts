@@ -32,8 +32,28 @@ export default class UserController {
       autonomia,
       correlationId
     );
-    
+
     if (usuario === true && veiculo === true) {
+      return res
+        .status(200)
+        .json({ message: "Cadastro realizado com sucesso" });
+    } else {
+      return res.status(400).json({ message: "Erro ao cadastrar" });
+    }
+  }
+  async editarUsuario(req: Request, res: Response) {
+    const { userId } = req.params;
+    const { nome, sobrenome, dataNascimento, telefone } = req.body;
+
+    const usuario = await this.service.editarUsuario(
+      nome,
+      sobrenome,
+      dataNascimento,
+      telefone,
+      userId
+    );
+
+    if (usuario) {
       return res
         .status(200)
         .json({ message: "Cadastro realizado com sucesso" });

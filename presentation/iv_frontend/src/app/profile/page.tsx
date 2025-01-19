@@ -48,7 +48,7 @@ export default function Profile() {
                   </div>
                 </div>
               )}
-              <div>
+            <div>
                 <Link href={"/profile/edit"}>Editar</Link>
               </div>
             </div>
