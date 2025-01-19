@@ -1,3 +1,4 @@
+from confluent_kafka.admin import AdminClient, NewTopic
 from confluent_kafka import Consumer, KafkaException, KafkaError
 from messenger import enviar_mensagem
 import json
@@ -29,7 +30,8 @@ def consume_messages():
                     # Fim da partição (não é erro crítico)
                     continue
                 else:
-                    raise KafkaException(message.error())
+                    print(f"Erro: {message.error()}")
+                    continue
             
             # Mensagem recebida com sucesso
             print(f"Mensagem recebida: {message.value().decode('utf-8')}")
@@ -46,7 +48,7 @@ def consume_messages():
 
 # Função para realizar ações com os dados recebidos
 def process_user_data(user_data):
-    message = f"Usuário Cadastro: \n\nNome={user_data['nome']}\nE-mail={user_data['email']}"
+    message = f"Usuário Cadastro: \n\nNome={user_data['name']}\nE-mail={user_data['email']}"
     enviar_mensagem(message)
 
 # Iniciar o consumer
