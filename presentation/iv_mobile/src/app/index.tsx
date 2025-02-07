@@ -6,46 +6,54 @@ import {
   Image,
   TouchableOpacity,
   StatusBar,
-  Platform,
 } from "react-native";
-import { Link } from "expo-router";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Link, router } from "expo-router";
+import React, { useEffect } from "react";
+import isLoggedIn from "../utils/isLoggedIn";
 
 export default function HomeScreen() {
+  useEffect(() => {
+    const check = async () => {
+      if (await isLoggedIn()) {
+        router.replace("/home");
+      }
+    };
+    check()
+  }, []);
+
   return (
     <>
       <StatusBar backgroundColor={"#000"} barStyle="light-content" />
-        <ImageBackground
-          source={require("../../assets/images/bg.jpg")}
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          resizeMode="cover"
-        >
-          <View style={styles.overlay}>
-            <View style={styles.container}>
-              <Image
-                source={require("../../assets/images/logo-full.png")}
-                style={styles.logo}
-              />
-              <View style={styles.linha}></View>
-              <Text style={styles.text}>
-                Seja bem vindo a uma nova experiência para donos de veículos
-                elétricos! Faça login ou cadastre-se para aproveitar todos os
-                benefícios que a Infinity Volt pode te oferecer
-              </Text>
+      <ImageBackground
+        source={require("../../assets/images/bg.jpg")}
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        resizeMode="cover"
+      >
+        <View style={styles.overlay}>
+          <View style={styles.container}>
+            <Image
+              source={require("../../assets/images/logo-full.png")}
+              style={styles.logo}
+            />
+            <View style={styles.linha}></View>
+            <Text style={styles.text}>
+              Seja bem vindo a uma nova experiência para donos de veículos
+              elétricos! Faça login ou cadastre-se para aproveitar todos os
+              benefícios que a Infinity Volt pode te oferecer
+            </Text>
 
-              <Link href="/login" asChild>
-                <TouchableOpacity style={styles.botao}>
-                  <Text style={styles.text}>Entrar</Text>
-                </TouchableOpacity>
-              </Link>
-            </View>
+            <Link href="/login" asChild>
+              <TouchableOpacity style={styles.botao}>
+                <Text style={styles.text}>Entrar</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
-        </ImageBackground>
+        </View>
+      </ImageBackground>
     </>
   );
 }
