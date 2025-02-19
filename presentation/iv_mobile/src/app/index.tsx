@@ -12,14 +12,14 @@ import React, { useEffect } from "react";
 import isLoggedIn from "../utils/isLoggedIn";
 
 export default function HomeScreen() {
-  useEffect(() => {
-    const check = async () => {
-      if (await isLoggedIn()) {
-        router.replace("/home");
-      }
-    };
-    check()
-  }, []);
+  // useEffect(() => {
+  //   const check = async () => {
+  //     if (await isLoggedIn()) {
+  //       router.replace("/home");
+  //     }
+  //   };
+  //   check()
+  // }, []);
 
   return (
     <>
@@ -41,9 +41,9 @@ export default function HomeScreen() {
             />
             <View style={styles.linha}></View>
             <Text style={styles.text}>
-              Seja bem vindo a uma nova experiência para donos de veículos
+              Seja bem-vindo a uma nova experiência para donos de veículos
               elétricos! Faça login ou cadastre-se para aproveitar todos os
-              benefícios que a Infinity Volt pode te oferecer
+              benefícios que a Infinity Volt pode te oferecer!
             </Text>
 
             <Link href="/login" asChild>

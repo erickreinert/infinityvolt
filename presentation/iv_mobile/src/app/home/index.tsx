@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView from "react-native-maps";
 import checkLogin from "@/src/utils/checkLogin";
@@ -9,8 +9,9 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import rechargeStationsList, {
   RechargeStation,
 } from "@/src/mocks/rechargeStationsList";
-import Button from "@/src/components/Button";
 import getLocation from "@/src/utils/getLocation";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function ProtectedScreen() {
   const mapRef = useRef<MapView>();
@@ -126,21 +127,61 @@ export default function ProtectedScreen() {
         </View>
       </View>
       <Maps mapRef={mapRef} />
-      {selectedStation && (
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          padding: 12,
+          flexDirection: "row",
+          gap: 8,
+        }}
+      >
         <View
           style={{
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            padding: 12,
+            width: 72,
+            gap: 8,
           }}
         >
-          <Button
-            title="Abrir no Waze"
-            onClick={() => Alert.alert("Abrindo no waze")}
-          />
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#fff",
+              width: 72,
+              height: 72,
+              borderRadius: 56,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderWidth: 2,
+              borderColor: "#c7c7c7",
+            }}
+            onPress={() => Alert.alert("Abrindo no waze")}
+          >
+            <AntDesign name="plus" size={36} color="black" />
+          </TouchableOpacity>
         </View>
-      )}
+        {selectedStation && (
+          <Link href={"/home/rechargestation"} style={{display: "flex", flex: 1}}>
+            <View
+              style={{
+                display: "flex",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#004aad",
+                borderRadius: 56,
+                justifyContent: "center",
+                alignItems: "center",
+                borderWidth: 2,
+                borderColor: "#013e8f",
+              }}
+            >
+              <Text style={{ color: "#fff", fontWeight: 600, fontSize: 22}}>
+                Ver detalhes
+              </Text>
+            </View>
+          </Link>
+        )}
+      </View>
     </View>
   );
 }

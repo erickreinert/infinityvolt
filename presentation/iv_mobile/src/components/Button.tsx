@@ -2,7 +2,8 @@ import { Link } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
-  title: string;
+  title?: string;
+  icon?: React.ReactNode;
   variant?: "button" | "link";
   onClick?: () => void;
   href?: string;
@@ -13,11 +14,12 @@ export default function Button({
   onClick,
   variant = "button",
   href,
+  icon
 }: Props) {
   if (variant === "button" && onClick) {
     return (
       <TouchableOpacity onPress={onClick} style={styles.button}>
-        <Text style={styles.buttonText}>{title}</Text>
+        <Text style={styles.buttonText}>{icon}{title}</Text>
       </TouchableOpacity>
     );
   } else if (variant === "link" && href) {
