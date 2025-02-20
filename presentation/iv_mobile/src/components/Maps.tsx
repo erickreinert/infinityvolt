@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { LocationObject } from "expo-location";
-import getLocation from "../utils/getLocation";
-import rechargeStationsList from "../mocks/rechargeStationsList";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { useAppContext } from "../contexts/AppContext";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import CustomMarker from "./CustomMarker";
 
 interface Props {
   mapRef: any;
 }
 
 export default function Maps({ mapRef }: Props) {
-  const [location, setLocation] = useState<LocationObject | null>(null);
+  const { loadingLocation, location, nearbyStations, selectStation } = useAppContext();
 
-  useEffect(() => {
-    fetchLocation();
-  }, []);
-
-  async function fetchLocation() {
-    const location = await getLocation();
-    if (location) setLocation(location);
-  }
   return (
     <View style={styles.container}>
+      {loadingLocation && (
+        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+          <Text style={{fontSize: 20, color: "#fff"}}>Buscando sua localização</Text>
+        </View>
+      )}
       {location && (
         <MapView
           ref={mapRef}
@@ -41,18 +38,9 @@ export default function Maps({ mapRef }: Props) {
             pitch: 1,
           }}
         >
-          {rechargeStationsList.map((r, index) => {
+          {nearbyStations.map((r, index) => {
             return (
-              <Marker
-                key={index}
-                onPress={(e) => {
-                  console.log(index);
-                }}
-                coordinate={{
-                  latitude: r.latitude,
-                  longitude: r.longitude,
-                }}
-              />
+              <CustomMarker station={r} selectStation={selectStation} key={index}/>
             );
           })}
         </MapView>

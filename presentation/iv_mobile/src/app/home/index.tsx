@@ -1,31 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
-import { Link, router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Link } from "expo-router";
 import MapView from "react-native-maps";
 import checkLogin from "@/src/utils/checkLogin";
 import Maps from "@/src/components/Maps";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import rechargeStationsList, {
-  RechargeStation,
-} from "@/src/mocks/rechargeStationsList";
-import getLocation from "@/src/utils/getLocation";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useAppContext } from "@/src/contexts/AppContext";
+import StationPopup from "./components/StationPopup/StationPopup";
 
 export default function ProtectedScreen() {
+  const { location, selectStation, selectedStation, nearbyStations } =
+    useAppContext();
   const mapRef = useRef<MapView>();
-  const [selectedStation, setSelectedStation] =
-    useState<RechargeStation | null>(null);
 
   useEffect(() => {
     checkLogin();
   }, []);
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem("token");
-    router.replace("/login");
-  };
+  // const handleLogout = async () => {
+  //   await AsyncStorage.removeItem("token");
+  //   router.replace("/login");
+  // };
 
   function goToLocation(
     lat: number,
@@ -61,7 +57,6 @@ export default function ProtectedScreen() {
           </Text>
           <TouchableOpacity
             onPress={async () => {
-              const location = await getLocation();
               if (location) {
                 goToLocation(
                   location.coords.latitude,
@@ -83,48 +78,6 @@ export default function ProtectedScreen() {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{ gap: 12 }}>
-          {rechargeStationsList.map((r, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  backgroundColor:
-                    selectedStation?.id === r.id ? "#bbbbbb" : "#f0f0f0",
-                  borderRadius: 12,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  overflow: "hidden",
-                }}
-              >
-                <View style={{ padding: 12 }}>
-                  <Text style={{ fontSize: 16, fontWeight: 500 }}>
-                    {r.name}
-                  </Text>
-                  <Text style={{ fontSize: 12 }}>{r.endereco}</Text>
-                </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectedStation(r);
-                    goToLocation(r.latitude, r.longitude);
-                  }}
-                  style={{
-                    backgroundColor: "#004aad",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    padding: 12,
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="map-marker"
-                    size={32}
-                    color="white"
-                  />
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-        </View>
       </View>
       <Maps mapRef={mapRef} />
       <View
@@ -137,49 +90,31 @@ export default function ProtectedScreen() {
           gap: 8,
         }}
       >
-        <View
-          style={{
-            width: 72,
-            gap: 8,
-          }}
-        >
-          <TouchableOpacity
+        <StationPopup />
+        {!selectedStation && (
+          <View
             style={{
-              backgroundColor: "#fff",
               width: 72,
-              height: 72,
-              borderRadius: 56,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderWidth: 2,
-              borderColor: "#c7c7c7",
+              gap: 8,
             }}
-            onPress={() => Alert.alert("Abrindo no waze")}
           >
-            <AntDesign name="plus" size={36} color="black" />
-          </TouchableOpacity>
-        </View>
-        {selectedStation && (
-          <Link href={"/home/rechargestation"} style={{display: "flex", flex: 1}}>
-            <View
+            <TouchableOpacity
               style={{
-                display: "flex",
-                width: "100%",
-                height: "100%",
-                backgroundColor: "#004aad",
+                backgroundColor: "#fff",
+                width: 72,
+                height: 72,
                 borderRadius: 56,
+                display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 borderWidth: 2,
-                borderColor: "#013e8f",
+                borderColor: "#c7c7c7",
               }}
+              onPress={() => Alert.alert("Abrindo no waze")}
             >
-              <Text style={{ color: "#fff", fontWeight: 600, fontSize: 22}}>
-                Ver detalhes
-              </Text>
-            </View>
-          </Link>
+              <AntDesign name="plus" size={36} color="black" />
+            </TouchableOpacity>
+          </View>
         )}
       </View>
     </View>

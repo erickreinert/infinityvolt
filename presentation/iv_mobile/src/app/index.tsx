@@ -12,14 +12,14 @@ import React, { useEffect } from "react";
 import isLoggedIn from "../utils/isLoggedIn";
 
 export default function HomeScreen() {
-  // useEffect(() => {
-  //   const check = async () => {
-  //     if (await isLoggedIn()) {
-  //       router.replace("/home");
-  //     }
-  //   };
-  //   check()
-  // }, []);
+  useEffect(() => {
+    const check = async () => {
+      if (await isLoggedIn()) {
+        router.replace("/home");
+      }
+    };
+    check()
+  }, []);
 
   return (
     <>
