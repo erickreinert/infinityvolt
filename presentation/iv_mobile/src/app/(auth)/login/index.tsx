@@ -35,11 +35,13 @@ export default function LoginScreen() {
           onChange={(v) => setEmail(v)}
           placeholder="E-mail"
           value={email}
+          email
         />
         <Input
           onChange={(v) => setPassword(v)}
           placeholder="Senha"
           value={password}
+          password
         />
       </View>
       <Button title="Login" onClick={() => handleLogin()} />

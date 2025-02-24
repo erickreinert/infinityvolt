@@ -1,10 +1,16 @@
-import Thumbnail from "@/src/components/Thumbnail";
-
-import { FlatList, Linking, Text, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Linking,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Button from "@/src/components/Button";
 import { useAppContext } from "@/src/contexts/AppContext";
 import Gallery from "@/src/components/Gallery";
+import { Link } from "expo-router";
+import BackButton from "@/src/components/BackButton";
 
 const images = [
   require("../../../../assets/images/recharge1.jpeg"),
@@ -15,16 +21,39 @@ export default function RechargeStationScreen() {
   const { selectedStation } = useAppContext();
 
   const random = Math.random() * (2.5 - 1.5) + 1.5;
+  const rating = Math.floor(Math.random() * 5 + 1);
+  const ratingCount = Math.floor(Math.random() * 100);
 
   if (selectedStation) {
     return (
-      <View>
-        {/* <Button title="Voltar" variant="link" href="/home" /> */}
+      <ScrollView>
         <Gallery imageList={images} />
         <View style={{ padding: 12 }}>
+          <BackButton />
           <Text style={{ color: "#fff", fontWeight: 900, fontSize: 26 }}>
-            {selectedStation.name}
+            {selectedStation.name} {rating}
           </Text>
+
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <MaterialCommunityIcons
+                key={index}
+                name={index < rating ? "star" : "star-outline"}
+                size={32}
+                color="#fff"
+              />
+            ))}
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 18,
+                marginLeft: 8,
+                textDecorationLine: "underline",
+              }}
+            >
+              {ratingCount} avaliações
+            </Text>
+          </View>
 
           <Text
             style={{
@@ -108,25 +137,92 @@ export default function RechargeStationScreen() {
             }}
           >
             <View>
-              <FlatList
-                data={selectedStation.connector_types}
-                keyExtractor={(item) => item}
-                renderItem={({ item }) => (
-                  <>
-                    <Text
-                      style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}
+              {selectedStation.connector_types.map((connector, index) => {
+                return (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                    key={index}
+                  >
+                    <View>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontWeight: 700,
+                            fontSize: 16,
+                            marginRight: 8,
+                          }}
+                        >
+                          {connector}
+                        </Text>
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <MaterialCommunityIcons
+                            key={index}
+                            name={index < rating ? "star" : "star-outline"}
+                            size={18}
+                            color="#fff"
+                          />
+                        ))}
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 14,
+                            marginLeft: 8,
+                            textDecorationLine: "underline",
+                          }}
+                        >
+                          {Math.round(ratingCount / selectedStation.connector_types.length)}{" "}
+                          avaliações
+                        </Text>
+                      </View>
+
+                      <Text style={{ color: "gray", fontSize: 16 }}>
+                        Sem informação de status
+                      </Text>
+                    </View>
+                    <Link
+                      href={"/home/rechargestation/rate"}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
                     >
-                      {item}
-                    </Text>
-                    <Text style={{ color: "gray", fontSize: 16 }}>
-                      Sem informação de status
-                    </Text>
-                  </>
-                )}
-              />
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          gap: 4,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontSize: 16,
+                            fontWeight: 900,
+                          }}
+                        >
+                          Avaliar
+                        </Text>
+                        <MaterialCommunityIcons
+                          key={index}
+                          name={"star"}
+                          size={18}
+                          color="#fff"
+                        />
+                      </View>
+                    </Link>
+                  </View>
+                );
+              })}
             </View>
           </View>
-          <TouchableOpacity
+          <Link
             style={{
               borderWidth: 1,
               borderColor: "#fff",
@@ -137,20 +233,29 @@ export default function RechargeStationScreen() {
               flexDirection: "row",
               borderRadius: 12,
             }}
-            onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${selectedStation.latitude},${selectedStation.longitude}`)}
+            href={"/home/rechargestation/comments"}
           >
-            <MaterialCommunityIcons name="chat" size={26} color="#fff" />
-            <Text
+            <View
               style={{
-                color: "#fff",
-                padding: 12,
-                fontSize: 18,
-                fontWeight: 800,
+                flexDirection: "row",
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              Comentários
-            </Text>
-          </TouchableOpacity>
+              <MaterialCommunityIcons name="chat" size={26} color="#fff" />
+              <Text
+                style={{
+                  color: "#fff",
+                  padding: 12,
+                  fontSize: 18,
+                  fontWeight: 800,
+                }}
+              >
+                Comentários
+              </Text>
+            </View>
+          </Link>
           <TouchableOpacity
             style={{
               backgroundColor: "#004aad",
@@ -160,7 +265,11 @@ export default function RechargeStationScreen() {
               flexDirection: "row",
               borderRadius: 12,
             }}
-            onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${selectedStation.latitude},${selectedStation.longitude}`)}
+            onPress={() =>
+              Linking.openURL(
+                `https://www.google.com/maps/search/?api=1&query=${selectedStation.latitude},${selectedStation.longitude}`
+              )
+            }
           >
             <MaterialCommunityIcons name="google-maps" size={26} color="#fff" />
             <Text
@@ -175,7 +284,7 @@ export default function RechargeStationScreen() {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

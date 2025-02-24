@@ -35,6 +35,10 @@ export default function LoginScreen() {
     repeatPassword: "",
     phone: "",
     birthDate: new Date(),
+    brand: "",
+    model: "",
+    year: "",
+    autonomy: ""
   });
 
   function handleChange(campo: string, valor: string | Date) {
@@ -70,6 +74,7 @@ export default function LoginScreen() {
               placeholder=""
               value={formData.email}
               label="E-mail"
+              email
             />
             <Separator />
             <Text style={styles.subtitle}>Dados</Text>
@@ -107,12 +112,14 @@ export default function LoginScreen() {
                 placeholder=""
                 label="Senha"
                 value={formData.password}
+                password
               />
               <Input
                 onChange={(v) => handleChange("repeatPassword", v)}
                 placeholder=""
                 label="Repetir senha"
                 value={formData.repeatPassword}
+                password
               />
             </View>
             <Separator />
@@ -122,27 +129,29 @@ export default function LoginScreen() {
                 label="Marca do veículo"
                 placeholder="Selecione..."
                 value={"selectedValue"}
-                onChange={(a) => console.log(a)}
+                onChange={(a) => handleChange("brand", a)}
                 items={brands}
               />
 
               <Input
-                onChange={(v) => console.log(v)}
+                onChange={(v) => handleChange("model", v)}
                 placeholder=""
                 label="Modelo"
-                value={"a"}
+                value={formData.model}
               />
               <Input
-                onChange={(v) => console.log(v)}
+                onChange={(v) => handleChange("year", v)}
                 placeholder=""
                 label="Ano de fabricação"
-                value={"a"}
+                value={formData.year}
+                number
               />
               <Input
-                onChange={(v) => console.log(v)}
+                onChange={(v) => handleChange("autonomy", v)}
                 placeholder=""
                 label="Autonomia (km)"
-                value={"a"}
+                value={formData.autonomy}
+                number
               />
             </View>
           </View>

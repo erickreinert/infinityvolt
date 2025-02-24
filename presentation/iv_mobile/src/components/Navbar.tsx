@@ -1,7 +1,16 @@
-import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router, usePathname } from "expo-router";
 
 export default function Navbar() {
+  const pathname = usePathname(); // Obtém o caminho atual
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("token");
+    router.replace("/login");
+  };
+
   return (
     <View
       style={{
@@ -28,13 +37,22 @@ export default function Navbar() {
             resizeMode: "contain",
           }}
         />
-        <Text style={{ color: "#fff", fontSize: 20, fontWeight: 900 }}>
+        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "900" }}>
           Infinity Volt
         </Text>
       </View>
-      <TouchableOpacity style={{paddingRight: 12}} onPress={() => Alert.alert("Menu")}>
-        <MaterialIcons name="menu" size={32} color="#fff" />
-      </TouchableOpacity>
+
+      <View style={{ paddingRight: 12, flexDirection: "row", gap: 24 }}>
+        {/* Esconde o botão de perfil se o usuário estiver na página de perfil */}
+        {pathname !== "/home/profile" && (
+          <TouchableOpacity onPress={() => router.push("/home/profile")}>
+            <MaterialCommunityIcons name="account" size={32} color="#fff" />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={handleLogout}>
+          <MaterialCommunityIcons name="logout" size={30} color="#fff" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

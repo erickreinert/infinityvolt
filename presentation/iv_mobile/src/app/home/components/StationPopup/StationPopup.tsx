@@ -1,13 +1,26 @@
 import { useAppContext } from "@/src/contexts/AppContext";
 import { Link } from "expo-router";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function StationPopup() {
-  const { selectedStation } = useAppContext();
+  const { selectedStation, selectStation } = useAppContext();
   if (selectedStation) {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>{selectedStation.name}</Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <Text style={styles.header}>{selectedStation.name}</Text>
+          <TouchableOpacity onPress={() => selectStation(null)}>
+            <MaterialCommunityIcons name="close-thick" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.address}>{selectedStation.address}</Text>
         <Text style={styles.subheader}>Tipos de conectores</Text>
         <View style={styles.connectorsContainer}>
@@ -39,7 +52,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
     paddingHorizontal: 12,
-    paddingVertical: 18
+    paddingVertical: 18,
   },
   header: {
     fontSize: 20,
@@ -57,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 2,
     borderColor: "#013e8f",
-    padding: 6
+    padding: 6,
   },
   subheader: {
     fontSize: 16,
@@ -68,5 +81,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
     padding: 8,
+  },
+  closeButton: {
+    fontSize: 20,
+    fontWeight: 700,
   },
 });

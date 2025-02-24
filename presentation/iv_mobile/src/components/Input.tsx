@@ -7,10 +7,16 @@ interface Props {
   onChange: (value: string) => void;
   label?: string,
   onPress?: () => void
-  editable?: boolean
+  editable?: boolean,
+  email?: boolean
+  password?: boolean
+  number?: boolean
 }
 
-export default function Input({ onChange, placeholder, value, label, onPress, editable }: Props) {
+export default function Input({ onChange, placeholder, value, label, onPress, editable, email, number, password }: Props) {
+  const keyboardType = email ? "email-address" : number ? "numeric" : "default";
+  const secureTextEntry = password || false;
+
   return (
     <View>
       {label && <Text style={{color: "#fff", fontWeight: 500, marginBottom: 6, fontSize: 16}}>{label}</Text>}
@@ -21,6 +27,8 @@ export default function Input({ onChange, placeholder, value, label, onPress, ed
         editable={editable}
         onPressIn={onPress}
         placeholderTextColor="#fff"
+        keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
         style={{
           borderWidth: 1,
           borderColor: "#fff",

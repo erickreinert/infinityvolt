@@ -36,8 +36,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setLoadingLocation(true);
       console.log("Buscando localização do usuário")
       const location = await getLocation();
-      console.log("Localização encontrada")
       if (location) {
+        console.log("Localização encontrada")
         setLocation(location);
         setNearbyStations(getNearbyStations({latitude: location.coords.latitude, longitude: location.coords.longitude}, 3))
       }

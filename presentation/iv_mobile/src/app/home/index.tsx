@@ -1,16 +1,15 @@
 import { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import MapView from "react-native-maps";
 import checkLogin from "@/src/utils/checkLogin";
 import Maps from "@/src/components/Maps";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useAppContext } from "@/src/contexts/AppContext";
 import StationPopup from "./components/StationPopup/StationPopup";
 
 export default function ProtectedScreen() {
-  const { location, selectStation, selectedStation, nearbyStations } =
+  const { location, selectedStation } =
     useAppContext();
   const mapRef = useRef<MapView>();
 
@@ -18,10 +17,7 @@ export default function ProtectedScreen() {
     checkLogin();
   }, []);
 
-  // const handleLogout = async () => {
-  //   await AsyncStorage.removeItem("token");
-  //   router.replace("/login");
-  // };
+
 
   function goToLocation(
     lat: number,
@@ -98,22 +94,23 @@ export default function ProtectedScreen() {
               gap: 8,
             }}
           >
-            <TouchableOpacity
-              style={{
-                backgroundColor: "#fff",
-                width: 72,
-                height: 72,
-                borderRadius: 56,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderWidth: 2,
-                borderColor: "#c7c7c7",
-              }}
-              onPress={() => Alert.alert("Abrindo no waze")}
-            >
-              <AntDesign name="plus" size={36} color="black" />
-            </TouchableOpacity>
+            <Link href={"/home/newstation"}>
+              <View
+                style={{
+                  backgroundColor: "#fff",
+                  width: 72,
+                  height: 72,
+                  borderRadius: 56,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderWidth: 2,
+                  borderColor: "#c7c7c7",
+                }}
+              >
+                <AntDesign name="plus" size={36} color="black" />
+              </View>
+            </Link>
           </View>
         )}
       </View>
